@@ -1,0 +1,84 @@
+services:
+
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - 88:80
+    volumes:
+      - ./:/var/www/app
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - app
+    networks:
+      - sandbox
+
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/php/Dockerfile
+    working_dir: /var/www/app
+    volumes:
+      - ./:/var/www/app
+      # - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+      # - ./docker/supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
+    networks:
+      - sandbox
+    depends_on:
+      - mysql
+      # - redis
+      # - mailhog
+
+  mysql:
+    image: mysql:8.4
+    ports:
+      - 3306:3306
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: '${DB_DATABASE:-sandbox}'
+      MYSQL_USER: '${DB_USERNAME:-sandboxer}'
+      MYSQL_PASSWORD: '${DB_PASSWORD:-secret}'
+      MYSQL_ROOT_PASSWORD: 'root'
+    networks:
+      - sandbox
+
+  # redis:
+  #   image: 'redis:alpine'
+  #   ports:
+  #     - '${FORWARD_REDIS_PORT:-6379}:6379'
+  #   volumes:
+  #     - ./docker/redis:/data
+  #   networks:
+  #     - sandbox
+  #   command: >
+  #     sh -c " chown -R redis:redis /data && chmod -R 755 /data && redis-server --appendonly yes --stop-writes-on-bgsave-error no "
+  #   healthcheck:
+  #     test:
+  #       - CMD
+  #       - redis-cli
+  #       - ping
+  #     retries: 3
+  #     timeout: 5s
+
+  # mailhog:
+  #   image: mailhog/mailhog
+  #   ports:
+  #     - 1025:1025
+  #     - 8025:8025
+  #   networks:
+  #     - sandbox
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - 8080:8080
+    environment:
+      - ADMINER_DEFAULT_SERVER=${DB_HOST}
+    depends_on:
+      - mysql
+    networks:
+      - sandbox
+
+networks:
+  sandbox:
+    driver: bridge
