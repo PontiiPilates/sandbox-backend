@@ -2,6 +2,7 @@
 
 namespace App\Domains\Poidu\src;
 
+use App\Domains\Poidu\Console\Commands\UpdateEventsCommand;
 use Illuminate\Support\ServiceProvider;
 
 class PoiduServiceProvider extends ServiceProvider
@@ -12,6 +13,10 @@ class PoiduServiceProvider extends ServiceProvider
     public function register(): void
     {
         // parent::register();
+
+        $this->commands([
+            UpdateEventsCommand::class,
+        ]);
     }
 
     /**
