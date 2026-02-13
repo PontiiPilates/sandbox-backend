@@ -2,7 +2,8 @@
 
 namespace App\Domains\Poidu\Http\Controllers;
 
-use App\Models\Event;
+use App\Domains\Poidu\Models\Event;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class EventController extends Controller

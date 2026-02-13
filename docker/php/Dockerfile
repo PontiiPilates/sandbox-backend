@@ -24,4 +24,16 @@ RUN mkdir -p "/etc/supervisor/logs"
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Установка рабочей директории
+WORKDIR /var/www/app
+
+# Копируем остальной код приложения
+COPY . .
+
+# Установка зависимостей
+# RUN composer install --no-scripts --no-interaction --prefer-dist --optimize-autoloader
+
+# Оптимизация автозагрузчика
+# RUN composer dump-autoload --optimize --classmap-authoritative
+
 # CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

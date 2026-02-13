@@ -2,6 +2,7 @@
 
 namespace App\Domains\Poidu\Console\Commands;
 
+use App\Domains\Poidu\Models\Category;
 use App\Domains\Poidu\Models\Event;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
@@ -23,13 +24,21 @@ class UpdateEventsCommand extends Command
     protected $description = 'Command description';
 
     /**
+     * Исключения парсинга.
+     * 
+     * @var array
+     */
+    protected $parsingExceptions = [];
+
+    /**
      * Execute the console command.
      */
     public function handle()
     {
-        $digest = Storage::json('/poidu/uploads/digest.json');
+        $digest = Storage::disk('local')->json('poidu/uploads/digest.json');
 
-        $this->info("Обработка " . count($digest) . " записей...");
+        $countCategories = Category::count();
+
         $bar = $this->output->createProgressBar(count($digest));
 
         $iterable = 0;
@@ -37,13 +46,18 @@ class UpdateEventsCommand extends Command
 
             $event = (object) $event;
 
+            if (!$event?->title) {
+                $this->parsingExceptions[] = $event;
+                continue;
+            }
+
             $eventModel = Event::firstOrCreate(
                 [
                     'channel_id' => $event->channel_id,
                     'post_id' => $event->post_id,
                 ],
                 [
-                    'category_id' => 1,
+                    'category_id' =>  config('services.poidu.fake') ? rand(1, $countCategories) : $event->category,
                     'title' => $event->title,
                     'description' => $event->description,
                     'date_start' => $event->date_start,
@@ -67,5 +81,10 @@ class UpdateEventsCommand extends Command
         $this->newLine();
 
         $this->info("Добавлено $iterable записей");
+
+        if ($this->parsingExceptions) {
+            $this->warn("Обнаружены следующие исключения при добавлении");
+            dd($this->parsingExceptions);
+        }
     }
 }

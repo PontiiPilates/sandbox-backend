@@ -13,8 +13,19 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('categories')->insert([
-            'category' => 'Походы',
-        ]);
+        $catrgories = [
+            'Походы',
+            'Сплавы',
+            'Экскурсии',
+            'Туры',
+            'С детьми',
+            'Эти выходные',
+        ];
+
+        foreach ($catrgories as $category) {
+            DB::table('categories')->insert([
+                'category' => $category,
+            ]);
+        }
     }
 }
