@@ -32,6 +32,7 @@ return new class extends Migration
             $table->dateTime('post_was_created');
 
             $table->boolean('human')->default(false)->comment('t - созданный человеком, f - полученный путём парсинга');
+            $table->boolean('approved')->default(false)->comment('t - администратор одобрил для публикации, f - не модерирован');
 
             $table->timestamps();
         });
