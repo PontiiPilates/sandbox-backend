@@ -2,6 +2,9 @@
 
 namespace App\Domains\Poidu\Http\Controllers;
 
+use App\Domains\Poidu\Http\Requests\EventRequest;
+use App\Domains\Poidu\Http\Requests\EventsRequest;
+use App\Domains\Poidu\Http\Resources\EventResource;
 use App\Domains\Poidu\Models\Event;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,9 +14,30 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(EventsRequest $request)
     {
-        // git test
+        $events = Event::query()
+            ->when($request->column, function ($q, $column) use ($request) {
+                $q->whereHas($column, function ($q) use ($request) {
+                    $q->where('id', $request->value);
+                });
+            })
+            ->when($request->sort, function ($q, $sort) use ($request) {
+                $q->when($request->direction, function ($q, $direction) use ($request, $sort) {
+                    switch ($direction) {
+                        case 'asc':
+                            $q->orderBy($sort);
+                            break;
+                        case 'desc':
+                            $q->orderByDesc($sort);
+                            break;
+                    }
+                });
+            })
+            ->limit(3)
+            ->get();
+
+        return EventResource::collection($events);
     }
 
     /**
@@ -35,9 +59,11 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Event $event)
+    public function show(EventRequest $request)
     {
-        //
+        $event = Event::find($request->id);
+
+        return new EventResource($event);
     }
 
     /**
