@@ -24,7 +24,7 @@ class EventsRequest extends FormRequest
         return [
             'column' => 'in:category',
             'value' => 'integer',
-            'sort' => 'in:price_min,price_max',
+            'sort' => 'in:price_min,price_max,date_start',
             'direction' => 'in:asc,desc',
             'search' => 'min:3|max:100',
         ];

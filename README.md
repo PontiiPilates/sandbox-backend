@@ -1,21 +1,11 @@
-# Deployment
+Песочница для проектов
+======================
 
-```bash
-git clone https://github.com/PontiiPilates/sandbox-backend.git
-```
+## Содержание
 
-```bash
-docker compose up -d --build
-```
+* **[Poidu](/app/Domains/Poidu/README.md)**
+* **[Kidsev](../)**
+* **[Pair strategy](../)**
 
-```bash
-docker compose exec app bash
-```
-
-```bash
-composer install --no-scripts --no-interaction --prefer-dist --optimize-autoloader
-```
-
-```bash
-composer install --no-scripts --no-interaction --prefer-dist --optimize-autoloader
-```
+***
+2026

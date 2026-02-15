@@ -7,6 +7,7 @@ use App\Domains\Poidu\Http\Requests\EventsRequest;
 use App\Domains\Poidu\Http\Resources\EventResource;
 use App\Domains\Poidu\Models\Event;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -22,6 +23,9 @@ class EventController extends Controller
                     $q->where('id', $request->value);
                 });
             })
+            ->when($request->search, function ($q, $search) use ($request) {
+                $q->where('title', 'like', "%$search%");
+            })
             ->when($request->sort, function ($q, $sort) use ($request) {
                 $q->when($request->direction, function ($q, $direction) use ($request, $sort) {
                     switch ($direction) {
@@ -34,7 +38,8 @@ class EventController extends Controller
                     }
                 });
             })
-            ->limit(3)
+            ->where('date_start', '>', now('Asia/Krasnoyarsk')->subDays(config('services.poidu.past_days')))
+            ->limit(10)
             ->get();
 
         return EventResource::collection($events);

@@ -2,9 +2,12 @@
 
 namespace App\Domains\Poidu\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+use function Symfony\Component\Clock\now;
 
 class Event extends Model
 {
@@ -29,5 +32,19 @@ class Event extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Возвращает состояние события. Событие устарело, если его datetime находится в прошлом.
+     * @return bool
+     */
+    public function getIsActiveAttribute(): bool
+    {
+        $eventDatetime = Carbon::parse($this->date_start . ' ' . $this->time_start, 'Asia/Krasnoyarsk');
+
+        if (now('Asia/Krasnoyarsk') > $eventDatetime) {
+            return false;
+        }
+        return true;
     }
 }
