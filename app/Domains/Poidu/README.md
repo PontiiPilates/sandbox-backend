@@ -1,8 +1,12 @@
 # Deployment
 
+Клонировать репозиторий
+
 ```bash
 git clone https://github.com/PontiiPilates/sandbox-backend.git
 ```
+
+Поднять проект в докере
 
 ```bash
 docker compose up -d --build
@@ -13,9 +17,23 @@ docker compose exec app bash
 ```
 
 ```bash
-composer install --no-scripts --no-interaction --prefer-dist --optimize-autoloader
+composer install
 ```
 
 ```bash
-composer install --no-scripts --no-interaction --prefer-dist --optimize-autoloader
+chmod 777 storage/ bootstrap/ -R
+```
+
+```bash
+exit
+```
+
+Наполнение данными
+
+```bash
+sudo docker compose exec app php artisan migrate:refresh --seed
+```
+
+```bash
+sudo docker compose exec app php artisan app:update-events
 ```

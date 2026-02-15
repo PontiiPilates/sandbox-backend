@@ -41,6 +41,7 @@ services:
       MYSQL_ROOT_PASSWORD: 'root'
     networks:
       - sandbox
+    restart: unless-stopped
 
   # redis:
   #   image: 'redis:alpine'
