@@ -46,6 +46,8 @@ class UpdateEventsCommand extends Command
 
             $event = (object) $event;
 
+            $categoryId = Category::where('category', $event->category)->first()->id;
+
             if (!$event?->title) {
                 $this->parsingExceptions[] = $event;
                 continue;
@@ -57,13 +59,13 @@ class UpdateEventsCommand extends Command
                     'post_id' => $event->post_id,
                 ],
                 [
-                    'category_id' =>  config('services.poidu.fake') ? rand(1, $countCategories) : $event->category,
+                    'category_id' =>  config('services.poidu.fake') ? rand(1, $countCategories) : $categoryId,
                     'title' => $event->title,
                     'description' => $event->description,
                     'date_start' => $event->date_start,
                     'time_start' => $event->time_start,
-                    'price_min' => $event->price,
-                    'price_max' => $event->price,
+                    'price_min' => $event->price_min,
+                    'price_max' => $event->price_max,
                     'channel' => $event->channel,
                     'link_to_post' => $event->link,
                     'post_was_created' => $event->date,
