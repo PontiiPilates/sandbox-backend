@@ -18,8 +18,12 @@ class CategorySeeder extends Seeder
             'Сплавы',
             'Экскурсии',
             'Туры',
-            'С детьми',
+            'C детьми',
             'Эти выходные',
+            'Спелео',
+            'Восхождения',
+            'Соревнования',
+            'Фото'
         ];
 
         foreach ($catrgories as $category) {

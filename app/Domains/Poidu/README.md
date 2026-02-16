@@ -37,3 +37,13 @@ sudo docker compose exec app php artisan migrate:refresh --seed
 ```bash
 sudo docker compose exec app php artisan app:update-events
 ```
+
+Очистка проекта
+
+```bash
+docker-compose down --volumes --rmi all
+```
+
+```bash
+sudo rm docker/mysql/data/ -R
+```
