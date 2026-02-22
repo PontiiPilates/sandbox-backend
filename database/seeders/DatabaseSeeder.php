@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([CategorySeeder::class]);
 
-        if (env('APP_ENV' === Environment::LOCAL)) {
+        if (env('APP_ENV') === Environment::LOCAL->value) {
             $this->call([EventSeeder::class]);
         }
     }
