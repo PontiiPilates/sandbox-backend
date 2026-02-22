@@ -39,7 +39,6 @@ class EventController extends Controller
                 });
             })
             ->where('date_start', '>', now('Asia/Krasnoyarsk')->subDays(config('services.poidu.past_days')))
-            ->limit(10)
             ->get();
 
         return EventResource::collection($events);
