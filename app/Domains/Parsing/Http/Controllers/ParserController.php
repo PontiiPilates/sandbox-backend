@@ -15,8 +15,8 @@ class ParserController extends Controller
 
         public function madeline()
     {
-        $apiId = '31402230';
-        $apiash = 'a9a58e0d36bd14975f55d15fbd14d261';
+        $apiId = '###';
+        $apiash = '###';
 
         $settings = new AppInfo();
         $settings->setApiId($apiId);
