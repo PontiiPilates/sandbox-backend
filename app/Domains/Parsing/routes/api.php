@@ -1,8 +1,9 @@
 <?php
 
-use App\Domains\Parsing\Http\Controllers\ParserController;
+use App\Domains\Parsing\Http\Controllers\ParsingController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api/v1/parsing')->group(function () {
-    Route::get('/test', [ParserController::class, 'test'])->name('test');
+    Route::get('/tg-auth', [ParsingController::class, 'tgAuth'])->name('tg-auth');
+    Route::get('/show-extract', [ParsingController::class, 'showExtract'])->name('show-extract');
 });
