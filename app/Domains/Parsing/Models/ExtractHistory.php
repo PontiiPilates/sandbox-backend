@@ -14,5 +14,6 @@ class ExtractHistory extends Model
         'count_saved',
         'prepared_date',
         'prepared_ulid',
+        'prepared_path',
     ];
 }
