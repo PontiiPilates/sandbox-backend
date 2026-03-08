@@ -2,6 +2,7 @@
 
 namespace App\Domains\Poidu\database\seeders;
 
+use App\Domains\Poidu\Models\Category;
 use App\Domains\Poidu\Models\Event;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,23 +15,54 @@ class EventSeeder extends Seeder
      */
     public function run(): void
     {
+        $max = Category::max('id');
+
         DB::table('events')->insert([
-            'category_id' => '1',
+            'category_id' => rand(1, $max),
 
-            'title' => 'Мероприятие',
-            'description' => 'Описание мероприятия',
+            'title' => 'Грядущее мероприятие',
+            'description' => 'Описание грядущего мероприятия',
 
-            'date_start' => '2026-03-01',
-            'time_start' => '10:00',
+            'date_time' => now()->addDays(3),
 
-            'price_min' => '500',
-            'price_max' => '1000',
+            'price_min' => rand(300, 900),
+            'price_max' => rand(1000, 5900),
 
             'channel' => 't.me/source',
-            'channel_id' => 123456789,
-            'post_id' => '123456',
+            'channel_id' => -1001767496452,
+            'post_id' => rand(999, 9999),
             'link_to_post' => 'https://t.me/source/10"',
-            'post_was_created' => '2026-02-01 00:00:00+00:00',
+            'post_was_created' => now()->subHours(3),
+
+            'approved' => 1,
+            'views' => rand(10, 99),
+
+            'updated_at' => now(),
+            'created_at' => now(),
+        ]);
+
+        DB::table('events')->insert([
+            'category_id' => rand(1, $max),
+
+            'title' => 'Прошедшее мероприятие',
+            'description' => 'Описание прошедшего мероприятия',
+
+            'date_time' => now()->subDays(3),
+
+            'price_min' => rand(300, 900),
+            'price_max' => rand(1000, 5900),
+
+            'channel' => 't.me/source',
+            'channel_id' => -1001767496452,
+            'post_id' => rand(999, 9999),
+            'link_to_post' => 'https://t.me/source/10"',
+            'post_was_created' => now()->subHours(3),
+
+            'approved' => 1,
+            'views' => rand(100, 999),
+
+            'updated_at' => now(),
+            'created_at' => now(),
         ]);
     }
 }

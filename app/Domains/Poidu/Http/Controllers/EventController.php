@@ -7,7 +7,6 @@ use App\Domains\Poidu\Http\Requests\EventsRequest;
 use App\Domains\Poidu\Http\Resources\EventResource;
 use App\Domains\Poidu\Models\Event;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EventController extends Controller

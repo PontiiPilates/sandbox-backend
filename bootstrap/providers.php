@@ -7,4 +7,5 @@ return [
      * Domains
      */
     App\Domains\Poidu\src\PoiduServiceProvider::class,
+    App\Domains\Parsing\src\ParsingServiceProvider::class,
 ];
