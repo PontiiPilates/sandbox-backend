@@ -170,7 +170,6 @@ class ExtractionPreparationCommand extends Command
             - Экскурсии
             - Туры
             - C детьми
-            - Эти выходные
             - Спелео
             - Восхождения
             - Соревнования
