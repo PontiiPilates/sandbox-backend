@@ -61,6 +61,7 @@ class TgEventsExtractCommand extends Command
             $madelineProto = new API(config('services.parsing.tg.path_to_session'), $settings);
         } catch (\Throwable $th) {
             $this->line("Не удалось создать клиент. Вероятное решение: удалить сессию и авторизоваться вновь.");
+            return __LINE__;
         }
 
         // установка соединения/авторизация
@@ -68,6 +69,7 @@ class TgEventsExtractCommand extends Command
             $madelineProto->start();
         } catch (\Throwable $th) {
             $this->line("Не удалось установить соединение. Вероятное решение: удалить сессию и авторизоваться вновь.");
+            return __LINE__;
         }
 
         foreach ($eventsChannels as $channel) {
@@ -132,6 +134,6 @@ class TgEventsExtractCommand extends Command
             'count_saved' => $this->saved,
         ]);
 
-        $this->success("Сохранено $this->saved постов");
+        $this->info("Сохранено $this->saved постов");
     }
 }
