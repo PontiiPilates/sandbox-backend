@@ -21,6 +21,7 @@ services:
       - ./:/var/www/app
       # - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
       # - ./docker/supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
+    command: bash -c "php artisan schedule:work" 
     networks:
       - sandbox
     depends_on:
