@@ -7,5 +7,16 @@
 ```shell
 docker compose exec app php artisan parsing:tg-events-extract 10
 ```
- - 10 - не сохранять посты старше 10 дней
+ - 5 - не сохранять посты старше 10 дней
  - -R - очистить таблицу экстракций
+
+## Отправка экстрагированного контента на категоризацию
+
+```shell
+docker compose exec app php artisan parsing:extraction-preparation
+```
+
+## Обновление мероприятий категоризированными
+```shell
+docker compose exec app php artisan parsing:update-events
+```
