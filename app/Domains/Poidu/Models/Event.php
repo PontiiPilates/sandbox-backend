@@ -18,8 +18,7 @@ class Event extends Model
         'category_id',
         'title',
         'description',
-        'date_start',
-        'time_start',
+        'date_time',
         'price_min',
         'price_max',
         'channel',
@@ -27,6 +26,8 @@ class Event extends Model
         'post_id',
         'link_to_post',
         'post_was_created',
+        'approved',
+        'views',
     ];
 
     public function category(): BelongsTo

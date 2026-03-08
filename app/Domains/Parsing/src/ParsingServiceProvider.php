@@ -4,6 +4,7 @@ namespace App\Domains\Parsing\src;
 
 use App\Domains\Parsing\Console\ExtractionPreparationCommand;
 use App\Domains\Parsing\Console\TgEventsExtractCommand;
+use App\Domains\Parsing\Console\UpdateEventsCommand as ConsoleUpdateEventsCommand;
 use App\Domains\Poidu\Console\Commands\UpdateEventsCommand;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +20,7 @@ class ParsingServiceProvider extends ServiceProvider
         $this->commands([
             ExtractionPreparationCommand::class,
             TgEventsExtractCommand::class,
+            ConsoleUpdateEventsCommand::class,
         ]);
     }
 

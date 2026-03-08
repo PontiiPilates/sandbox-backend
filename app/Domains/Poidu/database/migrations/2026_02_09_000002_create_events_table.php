@@ -19,20 +19,21 @@ return new class extends Migration
             $table->char('title');
             $table->text('description');
 
-            $table->date('date_start')->nullable();
-            $table->time('time_start')->nullable();
+            $table->dateTime('date_time')->nullable();
 
             $table->integer('price_min');
             $table->integer('price_max');
 
             $table->char('channel');
-            $table->unsignedInteger('channel_id');
+            $table->bigInteger('channel_id');
             $table->unsignedInteger('post_id');
             $table->char('link_to_post');
             $table->dateTime('post_was_created');
 
             $table->boolean('human')->default(false)->comment('t - созданный человеком, f - полученный путём парсинга');
             $table->boolean('approved')->default(false)->comment('t - администратор одобрил для публикации, f - не модерирован');
+
+            $table->integer('views')->default(0)->comment('количество просмотров');
 
             $table->timestamps();
         });
