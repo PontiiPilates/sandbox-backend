@@ -1,5 +1,4 @@
 services:
-
   nginx:
     image: nginx:stable-alpine
     ports:
@@ -21,14 +20,6 @@ services:
       - ./:/var/www/app
       # - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
       # - ./docker/supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
-<<<<<<< Updated upstream
-    command: bash -c "php artisan schedule:work" 
-=======
-<<<<<<< Updated upstream
-=======
-    command: bash -c "php artisan schedule:work"
->>>>>>> Stashed changes
->>>>>>> Stashed changes
     networks:
       - sandbox
     depends_on:
@@ -43,10 +34,10 @@ services:
     volumes:
       - ./docker/mysql/data:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: '${DB_DATABASE:-sandbox}'
-      MYSQL_USER: '${DB_USERNAME:-sandboxer}'
-      MYSQL_PASSWORD: '${DB_PASSWORD:-secret}'
-      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: "${DB_DATABASE:-sandbox}"
+      MYSQL_USER: "${DB_USERNAME:-sandboxer}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:-secret}"
+      MYSQL_ROOT_PASSWORD: "root"
     networks:
       - sandbox
     restart: unless-stopped
