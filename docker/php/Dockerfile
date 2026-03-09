@@ -41,4 +41,11 @@ RUN composer install --no-scripts --no-interaction --prefer-dist --optimize-auto
 # Оптимизация автозагрузчика (только на первый раз, далее можно отключить)
 RUN composer dump-autoload --optimize --classmap-authoritative
 
+#todo: вернуть при случае вариант с superviosor
 # CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+
+# todo: вместо этого
+COPY ./docker/php/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
+CMD ["/usr/local/bin/start.sh"]

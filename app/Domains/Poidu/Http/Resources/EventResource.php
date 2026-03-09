@@ -25,6 +25,7 @@ class EventResource extends JsonResource
             "price_max" => $this->price_max,
             "link_to_post" => $this->link_to_post,
             "is_active" => $this->isActive,
+            "views" => $this->views,
         ];
     }
 }
