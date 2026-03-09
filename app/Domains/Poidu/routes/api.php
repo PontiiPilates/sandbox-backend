@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Poidu\Http\Controllers\AdminController;
 use App\Domains\Poidu\Http\Controllers\CategoryController;
 use App\Domains\Poidu\Http\Controllers\EventController;
 use App\Domains\Poidu\Http\Controllers\PoiduController;
@@ -14,8 +15,10 @@ Route::prefix('api/v1/poidu')->group(function () {
 
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
 
-    Route::get('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2', [CategoryController::class, 'admin'])->name('admin');
-    Route::get('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2/events', [CategoryController::class, 'admin'])->name('admin');
-    Route::get('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2/events/public', [CategoryController::class, 'admin'])->name('admin');
-    Route::get('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2/events/unpublic', [CategoryController::class, 'admin'])->name('admin');
+    /**
+     * Административная часть
+     */
+    Route::get('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2/events', [EventController::class, 'index'])->name('admin.events');
+    Route::patch('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2/event/{id}/public', [AdminController::class, 'public'])->name('admin.public');
+    Route::patch('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2/event/{id}/unpublic', [AdminController::class, 'unPublic'])->name('admin.unPublic');
 });

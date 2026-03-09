@@ -38,6 +38,7 @@ class EventController extends Controller
                 });
             })
             ->where('date_time', '>', now('Asia/Krasnoyarsk')->subDays(config('services.poidu.past_days')))
+            ->where('approved', 1)
             ->orderBy('date_time')
             ->get();
 
