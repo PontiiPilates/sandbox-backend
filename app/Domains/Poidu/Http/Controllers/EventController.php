@@ -37,12 +37,8 @@ class EventController extends Controller
                     }
                 });
             })
-<<<<<<< Updated upstream
-            ->where('date_start', '>', now('Asia/Krasnoyarsk')->subDays(config('services.poidu.past_days')))
-=======
             ->where('date_time', '>', now('Asia/Krasnoyarsk')->subDays(config('services.poidu.past_days')))
             ->orderBy('date_time')
->>>>>>> Stashed changes
             ->get();
 
         return EventResource::collection($events);
