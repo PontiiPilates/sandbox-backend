@@ -21,7 +21,14 @@ services:
       - ./:/var/www/app
       # - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
       # - ./docker/supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
+<<<<<<< Updated upstream
     command: bash -c "php artisan schedule:work" 
+=======
+<<<<<<< Updated upstream
+=======
+    command: bash -c "php artisan schedule:work"
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     networks:
       - sandbox
     depends_on:

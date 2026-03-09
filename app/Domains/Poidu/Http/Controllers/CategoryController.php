@@ -66,4 +66,18 @@ class CategoryController extends Controller
     {
         //
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function admin(Category $category)
+    {
+        return response([
+            'data' => [
+                'events' => 'some list',
+                'schedules' => 'some list',
+                'something' => 'else',
+            ]
+        ]);
+    }
 }

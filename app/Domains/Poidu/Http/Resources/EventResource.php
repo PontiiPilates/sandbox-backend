@@ -20,7 +20,7 @@ class EventResource extends JsonResource
             "title" => $this->title,
             "description" => $this->description,
             "date_start" => $this->date_start,
-            "time_start" => $this->time_start,
+            "time_start" => $this->time_start == '0:00' ? 'Уточняйте у организатора' : $this->time_start,
             "price_min" => $this->price_min,
             "price_max" => $this->price_max,
             "link_to_post" => $this->link_to_post,

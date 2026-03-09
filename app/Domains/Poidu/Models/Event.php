@@ -48,4 +48,16 @@ class Event extends Model
         }
         return true;
     }
+
+    public function getDateStartAttribute()
+    {
+        $dateStart = Carbon::parse($this->date_time);
+        return $dateStart->isoFormat('YYYY-MM-DD');
+    }
+
+    public function getTimeStartAttribute()
+    {
+        $timeStart = Carbon::parse($this->date_time);
+        return $timeStart->isoFormat('H:mm');
+    }
 }

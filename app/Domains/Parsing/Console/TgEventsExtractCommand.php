@@ -75,6 +75,11 @@ class TgEventsExtractCommand extends Command
         foreach ($eventsChannels as $channel) {
             $this->line($channel);
 
+<<<<<<< Updated upstream
+=======
+            sleep(1); // предотвращение превышения частоты запросов
+
+>>>>>>> Stashed changes
             // экстракция
             try {
                 $messages = $madelineProto->messages->getHistory(array_filter([
