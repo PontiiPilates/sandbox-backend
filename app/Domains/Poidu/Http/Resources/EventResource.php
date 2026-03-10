@@ -26,6 +26,7 @@ class EventResource extends JsonResource
             "link_to_post" => $this->link_to_post,
             "is_active" => $this->isActive,
             "views" => $this->views,
+            "approved" => $this->approved,
         ];
     }
 }
