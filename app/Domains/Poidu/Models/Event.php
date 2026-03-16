@@ -58,6 +58,6 @@ class Event extends Model
     public function getTimeStartAttribute()
     {
         $timeStart = Carbon::parse($this->date_time);
-        return $timeStart->isoFormat('H:mm');
+        return $timeStart->isoFormat('HH:mm');
     }
 }

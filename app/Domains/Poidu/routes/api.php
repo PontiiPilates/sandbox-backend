@@ -18,7 +18,7 @@ Route::prefix('api/v1/poidu')->group(function () {
     /**
      * Административная часть
      */
-    Route::get('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2/events', [EventController::class, 'index'])->name('admin.events');
+    Route::get('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2/events', [AdminController::class, 'events'])->name('admin.events');
     Route::patch('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2/event/{id}/public', [AdminController::class, 'public'])->name('admin.public');
     Route::patch('/admin/01KK6RJMFJTMMNBGA0N5KAN1Y2/event/{id}/unpublic', [AdminController::class, 'unPublic'])->name('admin.unPublic');
 });

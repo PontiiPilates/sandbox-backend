@@ -23,10 +23,6 @@ return new class extends Migration
 
             $table->dateTime('prepared_date')->nullable()->comment('дата обработки агентом');
             $table->ulid('prepared_ulid')->nullable()->comment('идентификатор обработки');
-<<<<<<< Updated upstream
-            $table->ulid('prepared_path')->nullable()->comment('путь до файла с подготовленными мероприятиями');
-=======
->>>>>>> Stashed changes
 
             $table->timestamps();
         });
