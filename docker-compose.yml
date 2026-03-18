@@ -42,6 +42,21 @@ services:
       - sandbox
     restart: unless-stopped
 
+  backup:
+    image: jkaninda/mysql-bkup
+    command: backup --cron-expression "0 1 * * *"  # каждый день в 1:00
+    volumes:
+      - ./docker/mysql/backups:/backup
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=sandbox
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    networks:
+      - sandbox
+    restart: unless-stopped
+
   # redis:
   #   image: 'redis:alpine'
   #   ports:
