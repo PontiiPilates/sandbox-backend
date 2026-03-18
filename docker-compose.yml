@@ -33,6 +33,7 @@ services:
       - 3306:3306
     volumes:
       - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/scripts/fix_innodb_redo.sh:/docker-entrypoint-initdb.d/fix_innodb_redo.sh
     environment:
       MYSQL_DATABASE: "${DB_DATABASE:-sandbox}"
       MYSQL_USER: "${DB_USERNAME:-sandboxer}"

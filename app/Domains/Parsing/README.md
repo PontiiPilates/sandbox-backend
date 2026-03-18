@@ -19,12 +19,9 @@ docker compose exec app php artisan parsing:extraction-preparation
 ## Обновление мероприятий категоризированными
 ```shell
 docker compose exec app php artisan parsing:update-events
-<<<<<<< Updated upstream
-=======
 ```
 
 ## Запуск планировщика
 ```shell
 docker compose exec app php artisan schedule:work
->>>>>>> Stashed changes
 ```
