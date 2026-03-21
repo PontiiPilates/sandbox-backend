@@ -30,4 +30,5 @@ Homestead.json
 auth.json
 
 /docker/mysql/data/*
+/docker/mysql/backups/*
 .vscode

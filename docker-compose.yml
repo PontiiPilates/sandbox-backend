@@ -8,8 +8,6 @@ services:
       - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
     depends_on:
       - app
-    networks:
-      - sandbox
 
   app:
     build:
@@ -20,28 +18,34 @@ services:
       - ./:/var/www/app
       # - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
       # - ./docker/supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
-    networks:
-      - sandbox
     depends_on:
       - mysql
-      # - redis
-      # - mailhog
 
   mysql:
-    image: mysql:8.4
+    image: mysql:latest
     ports:
       - 3306:3306
     volumes:
       - ./docker/mysql/data:/var/lib/mysql
-      - ./docker/mysql/scripts/fix_innodb_redo.sh:/docker-entrypoint-initdb.d/fix_innodb_redo.sh
     environment:
       MYSQL_DATABASE: "${DB_DATABASE:-sandbox}"
       MYSQL_USER: "${DB_USERNAME:-sandboxer}"
       MYSQL_PASSWORD: "${DB_PASSWORD:-secret}"
       MYSQL_ROOT_PASSWORD: "root"
-    networks:
-      - sandbox
-    restart: unless-stopped
+    restart: always
+
+  backup:
+    image: jkaninda/mysql-bkup
+    command: backup --cron-expression "0 1 * * *" # каждый день в 1:00
+    volumes:
+      - ./docker/mysql/backups:/backup
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=sandbox
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    restart: always
 
   # redis:
   #   image: 'redis:alpine'
@@ -66,8 +70,6 @@ services:
   #   ports:
   #     - 1025:1025
   #     - 8025:8025
-  #   networks:
-  #     - sandbox
 
   adminer:
     image: adminer:latest
@@ -77,9 +79,3 @@ services:
       - ADMINER_DEFAULT_SERVER=${DB_HOST}
     depends_on:
       - mysql
-    networks:
-      - sandbox
-
-networks:
-  sandbox:
-    driver: bridge
