@@ -75,7 +75,7 @@ class ExtractionPreparationCommand extends Command
             $executionTime = $timeStart->diffInSeconds($timeEnd);
             $executionTime = number_format((float) $executionTime, 1, '.');
 
-            $this->updateEctractHisory($ulid);
+            $this->updateExtractHisory($ulid);
 
             $this->info("Время обработки заняло $executionTime сек.");
         }
@@ -84,7 +84,7 @@ class ExtractionPreparationCommand extends Command
     /**
      * Закрытие записи о необработанной группе
      */
-    private function updateEctractHisory($ulid): void
+    private function updateExtractHisory($ulid): void
     {
         ExtractHistory::where('extraction_ulid', $ulid)->update([
             'prepared_date' => now(),
