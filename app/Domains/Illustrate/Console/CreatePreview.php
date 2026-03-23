@@ -2,12 +2,14 @@
 
 namespace App\Domains\Illustrate\Console;
 
-use App\Domains\Illustrate\Models\Illustrate;
 use App\Domains\Poidu\Models\Event;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use stdClass;
+
+use function Symfony\Component\Clock\now;
 
 class CreatePreview extends Command
 {
@@ -28,93 +30,97 @@ class CreatePreview extends Command
     private string $url;
     private string $apiKey;
 
+
     /**
      * Execute the console command.
-     * todo: отрефакторить вообще всё
-     * todo: это обусловлено неработающей базой
      */
     public function handle()
     {
-        // подготовка переменных
+        // +---------------------+
+        // подготовка переменных |
+        // +---------------------+
         $this->url = 'https://api.replicate.com/v1/models/black-forest-labs/flux-dev/predictions';
         $this->apiKey = config('services.replicate_api_token');
 
-        // обход всех файлов
-        $files = Storage::allFiles('illustrate/generated');
-        foreach ($files as $path) {
-
-            $prompts = Storage::json($path);
-            $newData = [];
-            foreach ($prompts as $key => $prompt) {
-                $illustrateName = Str::ulid();
-
-                // если фото еще не сгенерировано
-                if (!isset($prompt['stream'])) {
-
-                    // генерация фото
-                    $response = $this->sendRequest($prompt['prompt']);
-
-                    if (!$response->successful()) {
-                        $this->warn('Не удалось сгенерировать изображение');
-                        $this->warn($response->body());
-                        sleep(1);
-                        continue;
-                    }
-                    sleep(1);
-
-                    $linkAphoto = $response['urls']['stream'];
-
-                    // сохранение фото
-                    $response = Http::get($linkAphoto);
-
-                    // /storage/previews/someImage.jpg
-                    $result = Storage::disk('public')->put('previews/' . $illustrateName . '.jpg', $response->resource());
-
-                    // запись об этом в базу данных
-                    $event = Event::query()
-                        ->where('channel_id', $prompt['channel_id'])
-                        ->where('post_id', $prompt['post_id'])
-                        ->first();
-
-                    Illustrate::create([
-                        'event_id' => $event->id,
-                        'prompt' => $prompt['prompt'],
-                        'name' => $illustrateName,
-                    ]);
-
-                    // формирование данных с новой информацией для изменения исходного файла
-                    $prompt['stream'] = 'link';
-                    $prompt['name'] = $illustrateName;
-                    $newData[] = $prompt;
-
-                    continue;
-                }
-
-                $newData[] = $prompt;
+        // +---------------------------------------------------------------------+
+        // сначала происходит наполнение таблицы на основе имеющихся изображений |
+        // +---------------------------------------------------------------------+
+        $previews = collect(Storage::disk('public')->allFiles('previews/'));
+        $previews->each(function ($preview) {
+            $imageDetail = $this->getImageDetail($preview);
+            try {
+                $event = Event::query()
+                    ->where('post_id', $imageDetail->postId)
+                    ->where('channel_id', $imageDetail->channelId)
+                    ->where('preview', null)
+                    ->firstOrFail();
+            } catch (\Throwable $th) {
+                return;
             }
 
-            // обновление исходного файла
-            $newData = json_encode($newData, JSON_UNESCAPED_UNICODE);
-            $res = Storage::put($path, $newData);
+            $preview = Str::after($preview, '/');
+            $event->update(['preview' => $preview]);
+        });
 
-            // финальная проверка исходного файла
-            foreach ($prompts as $key => $prompt) {
-                $allGenerated = true;
-                if (!isset($prompt['stream'])) {
-                    $allGenerated = false;
-                }
+        // +--------------------------------------------------------------+
+        // затем происходит генерация изображений для тех, кому нехватило |
+        // будем считать, что промпты у них есть                          |
+        // +--------------------------------------------------------------+
+        $eventWithouthPreview = Event::query()
+            ->where('date_time', '>', now())
+            ->whereNot('prompt', null)
+            ->where('preview', null)
+            ->get();
+
+        $eventWithouthPreview->each(function ($event) {
+            $response = $this->sendRequest($event->prompt);
+
+            if (!$response->successful()) {
+                $this->warn('Не удалось сгенерировать изображение');
+                $this->warn($response->body());
+                sleep(12);
+                return;
             }
 
-            // перемещение в готовые если всё ок
-            if ($allGenerated) {
-                $to = Str::replace('generated', 'completed', $path);
-                $res = Storage::move($path, $to);
-            }
-        }
+            $preview =  $event->post_id . ':' . $event->channel_id . '.jpg';
+
+            $this->saveImage($response, $preview);
+
+            $event->update(['preview' => $preview]);
+
+            $this->info("Добавлено изображение $preview");
+
+            sleep(12);
+        });
+    }
+
+    private function getImageDetail($name)
+    {
+        $name = Str::after($name, '/');
+        $name = Str::before($name, '.');
+        $name = explode(':', $name);
+
+        $detail = new stdClass();
+        $detail->postId = $name[0];
+        $detail->channelId = $name[1];
+
+        return $detail;
     }
 
     /**
-     * Возвращает pool для параллельной отправки запросов
+     * Сохранение изображения. Доступ по пути /storage/previews/
+     */
+    private function saveImage($response, $name)
+    {
+        $stream = $response['urls']['stream'];
+
+        $response = Http::get($stream);
+
+        Storage::disk('public')->put('previews/' . $name, $response->resource());
+    }
+
+    /**
+     * Возвращает результат генерации
      */
     private function sendRequest($prompt)
     {

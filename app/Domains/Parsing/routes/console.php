@@ -28,6 +28,6 @@ use Illuminate\Support\Facades\Schedule;
 //  22 > 05
 //  23 > 06
 
-Schedule::command('parsing:tg-events-extract 1')->twiceDailyAt(1, 7, 50);
-Schedule::command('parsing:extraction-preparation')->twiceDailyAt(1, 7, 55);
-Schedule::command('parsing:update-events')->twiceDaily(2, 8);
+Schedule::command('parsing:tg-events-extract 1')->twiceDailyAt(1, 7, 45);
+Schedule::command('parsing:extraction-preparation')->twiceDailyAt(1, 7, 50);
+Schedule::command('parsing:update-events')->twiceDaily(1, 7, 55);

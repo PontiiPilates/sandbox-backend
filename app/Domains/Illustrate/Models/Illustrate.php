@@ -10,5 +10,7 @@ class Illustrate extends Model
         'event_id',
         'prompt',
         'name',
+        'channel_id',
+        'post_id'
     ];
 }

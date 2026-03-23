@@ -5,9 +5,9 @@
 ## Экстракция контента из Telegram
 
 ```shell
-docker compose exec app php artisan parsing:tg-events-extract 10
+docker compose exec app php artisan parsing:tg-events-extract 5
 ```
- - 5 - не сохранять посты старше 10 дней
+ - 5 - не сохранять посты старше 5 дней
  - -R - очистить таблицу экстракций
 
 ## Отправка экстрагированного контента на категоризацию

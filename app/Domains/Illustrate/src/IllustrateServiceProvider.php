@@ -2,7 +2,6 @@
 
 namespace App\Domains\Illustrate\src;
 
-use App\Domains\Illustrate\Console\AddIllustratePrompt;
 use App\Domains\Illustrate\Console\CreatePreview;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +13,6 @@ class IllustrateServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->commands([
-            AddIllustratePrompt::class,
             CreatePreview::class,
         ]);
     }
