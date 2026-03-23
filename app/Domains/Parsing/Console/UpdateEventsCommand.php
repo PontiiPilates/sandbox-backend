@@ -59,6 +59,7 @@ class UpdateEventsCommand extends Command
                         'link_to_post' => $post->link,
                         'post_was_created' => $post->date,
                         'approved' => 1,
+                        'prompt' => $post->prompt,
                     ]
                 );
 
