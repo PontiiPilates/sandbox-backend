@@ -75,7 +75,7 @@ class ExtractionPreparationCommand extends Command
             $executionTime = $timeStart->diffInSeconds($timeEnd);
             $executionTime = number_format((float) $executionTime, 1, '.');
 
-            $this->updateEctractHisory($ulid);
+            $this->updateExtractHisory($ulid);
 
             $this->info("Время обработки заняло $executionTime сек.");
         }
@@ -84,7 +84,7 @@ class ExtractionPreparationCommand extends Command
     /**
      * Закрытие записи о необработанной группе
      */
-    private function updateEctractHisory($ulid): void
+    private function updateExtractHisory($ulid): void
     {
         ExtractHistory::where('extraction_ulid', $ulid)->update([
             'prepared_date' => now(),
@@ -148,7 +148,7 @@ class ExtractionPreparationCommand extends Command
         $date = Carbon::now()->isoFormat('YYYY-MM-DD');
 
         return <<<PROMPT
-        Ты система для категоризации данных. Всегда отвечай ТОЛЬКО валидным Json. БЕЗ дополнительного текста.
+        Ты система для работы с данными. Всегда отвечай ТОЛЬКО валидным Json. БЕЗ дополнительного текста. Твоя задача - категоризировать посты по категориям и создавать к ним промпты для генерации изображений.
 
         Задача №1 - определить, является ли пост АНОНСОМ ТУРИСТИЧЕСКОГО мероприятия.
 
@@ -177,7 +177,16 @@ class ExtractionPreparationCommand extends Command
 
         В анонсе может говориться о походе + фото или тур + экскурсия, тогда пусть у мероприятия будет дополнительная категория помимо основной.
 
-        Задача №3 - сформировать и вернуть Json с элементами со следующей структурой:
+        Задача №3 - создать короткий промпт для генерации иллюстрирующего пост изображения.
+
+        Правила:
+            - Промпт должен быть на английском языке.
+            - Изображение должно быть фотореалистичным.
+            - Лейтмотив: походы, экскурсии, сплавы, туры, восхождения на горы, спуск в пещеры.
+            - Длина промпта - не более 20 слов.
+            - Промпт должен быть создан на основе description
+
+        Задача №4 - сформировать и вернуть Json с элементами со следующей структурой:
             - title - заголовок (название мероприятия)
             - description - краткое описание мероприятия
             - date_time - дата и время начала мероприятия в формате dateTime (ISO 8601: YYYY-MM-DD HH:MM:SS)
@@ -186,6 +195,7 @@ class ExtractionPreparationCommand extends Command
             - category - указать категорию, к которой удалось отнести мероприятие
             - additional_category - указать дополнительную категорию, если таковая присутствует
             - child - true - если в анонсе есть информация о том, что на мероприятие можно с детьми, false - если информации о детях нет
+            - prompt - промпт для генерации иллюстрирующего изображения
 
         Добавить к структуре без изменения параметры элемента переданной на обработку коллекции:
             - date

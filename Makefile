@@ -1,27 +1,49 @@
-# пересборка базы данных вместе с пересборкой контейнера
-db_hard_refresh: recreate_mysql_container sleep mv_files refresh_db
+# +-----------------------------------------+
+# Блок для быстрой пересборки всего проекта |
+# +-----------------------------------------+
 
-# обновление базы данных
-db_soft_refresh: mv_files refresh_db
-
-
-
-# пересборка контейнера вместе с очисткой волумсов и образов
-recreate_mysql_container:
-	sudo docker compose down mysql --volumes --rmi all
+# пересборка проекта с очисткой базы данных
+rebuild:
+	sudo docker compose down --volumes --rmi all
 	sudo rm -R ./docker/mysql/data/*
-	sudo docker compose up -d --build mysql
+	sudo docker compose up -d --build
 
-# обновление базы данных
-refresh_db:
+# перед восстановлением базы необходимо выполнить mv
+
+# восстановление данных
+recreate:
 	sudo docker compose exec app php artisan db:wipe
 	sudo docker compose exec app php artisan migrate:refresh --seed
 	sudo docker compose exec app php artisan parsing:update-events
 
-# перемещение использованных файлов в неиспользованные
-mv_files:
+# +------------------------------------------------------+
+# Блок алиасов для отдельных команд в логическом порядке |
+# +------------------------------------------------------+
+
+# полная очистка базы данных
+dbw:
+	sudo docker compose exec app php artisan db:wipe
+
+# создание таблиц и необходимых данных
+mrs:
+	sudo docker compose exec app php artisan migrate:refresh --seed
+
+# перемещает файлы из обработанных в еще не обработанные 
+mv:
 	mv ./storage/app/private/parsing/telegram/deleted/* storage/app/private/parsing/telegram/results
 
-# пауза
-sleep:
-	sleep 3
+# выкачивает посты из тг
+pex:
+	sudo docker compose exec app php artisan parsing:tg-events-extract 5
+
+# категоризирует выкаченный материал и сохраняет результат анализа в файл
+pep:
+	sudo docker compose exec app php artisan parsing:extraction-preparation
+
+# добавляет мероприятия на основе созданного ai файла
+pue:
+	sudo docker compose exec app php artisan parsing:update-events
+
+# бережно добавляет событиям изображения если есть иначе генерирует их
+icp:
+	sudo docker compose exec app php artisan illustrate:create-preview

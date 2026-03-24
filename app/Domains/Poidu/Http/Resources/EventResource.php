@@ -27,6 +27,9 @@ class EventResource extends JsonResource
             "is_active" => $this->isActive,
             "views" => $this->views,
             "approved" => $this->approved,
+            "preview" => $this->preview
+                ? url('/storage/previews/' . $this->preview)
+                : url('/storage/previews/default/' . 'summer:camping:company:flame.jpg'),
         ];
     }
 }
