@@ -1,14 +1,6 @@
 <?php
 
-use Carbon\Carbon;
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schedule;
-
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
 
 // каждые 15 с 9 до 11 часов по Красноярску
 Schedule::command('poidu:add-fake-view')

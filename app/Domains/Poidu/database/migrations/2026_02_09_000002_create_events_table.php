@@ -33,6 +33,9 @@ return new class extends Migration
             $table->boolean('human')->default(false)->comment('t - созданный человеком, f - полученный путём парсинга');
             $table->boolean('approved')->default(false)->comment('t - администратор одобрил для публикации, f - не модерирован');
 
+            $table->text('prompt')->nullable()->comment('промпт для генерации');
+            $table->char('preview')->nullable()->comment('имя сгенерированного изображения');
+
             $table->integer('views')->default(0)->comment('количество просмотров');
 
             $table->timestamps();

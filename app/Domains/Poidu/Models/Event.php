@@ -28,6 +28,9 @@ class Event extends Model
         'post_was_created',
         'approved',
         'views',
+        'prompt',
+        'preview',
+
     ];
 
     public function category(): BelongsTo
