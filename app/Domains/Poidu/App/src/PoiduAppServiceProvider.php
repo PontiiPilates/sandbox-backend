@@ -5,7 +5,7 @@ namespace App\Domains\Poidu\App\src;
 use App\Domains\Poidu\App\Console\AddFakeViewCommand;
 use Illuminate\Support\ServiceProvider;
 
-class PoiduServiceProvider extends ServiceProvider
+class PoiduAppServiceProvider extends ServiceProvider
 {
     /**
      * @return void

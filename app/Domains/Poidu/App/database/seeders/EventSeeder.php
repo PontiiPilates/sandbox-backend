@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Poidu\database\seeders;
+namespace App\Domains\Poidu\App\database\seeders;
 
 use App\Domains\Poidu\App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;

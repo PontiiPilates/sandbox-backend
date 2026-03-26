@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Poidu\database\seeders\CategorySeeder;
-use App\Domains\Poidu\database\seeders\EventSeeder;
-use App\Enums\Environment;
-use App\Models\User;
+use App\Domains\Poidu\App\database\seeders\DatabaseSeeder as PoiduAppDatabaseSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,15 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-        $this->call([CategorySeeder::class]);
-
-        if (env('APP_ENV') === Environment::LOCAL->value) {
-            $this->call([EventSeeder::class]);
-        }
+        $this->call([PoiduAppDatabaseSeeder::class]);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Domains\Poidu\Pipeline\src;
 
-use App\Domains\Illustrate\Console\CreatePreview;
+use App\Domains\Poidu\Pipeline\Console\PipelineEventMiningCommand;
 use Illuminate\Support\ServiceProvider;
 
-class PipelineServiceProvider extends ServiceProvider
+class PoiduPipelineServiceProvider extends ServiceProvider
 {
     /**
      * @return void
@@ -13,7 +13,7 @@ class PipelineServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->commands([
-            // CreatePreview::class,
+            PipelineEventMiningCommand::class
         ]);
     }
 
