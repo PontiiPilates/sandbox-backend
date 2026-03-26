@@ -41,6 +41,8 @@ class ExtractionPreparationCommand extends Command
      */
     public function handle()
     {
+        dd();
+        
         $this->url = 'https://api.deepseek.com/chat/completions';
         $this->apiKey = config('services.ai.deepseek_api_key');
 
@@ -60,9 +62,12 @@ class ExtractionPreparationCommand extends Command
             $timeStart = Carbon::now();
             $this->info("Отправлено {$this->countElementsToPrepare} элементов на обработку");
 
+            // dd('Stop');
             $responses = Http::pool(fn(Pool $pool) => $this->getPools($pool));
 
             foreach ($responses as $key => $response) {
+
+                dump($response);
 
                 if ($response->successful()) {
                     $this->saveToJson($response->object());
@@ -136,7 +141,16 @@ class ExtractionPreparationCommand extends Command
                 "stream" => false
             ];
 
-            return $pool->timeout(300)->withToken($this->apiKey)->post($this->url, $parameters);
+            $ulid = Str::ulid();
+            $parametersForFile = json_encode($parameters, JSON_UNESCAPED_UNICODE);
+            $res = Storage::put('test/' . $ulid . 'param' . '.json', $parametersForFile);
+            dump($res);
+            $res = Storage::put('test/' . $ulid . '.json', $chunk);
+            dump($res);
+
+
+
+            // return $pool->timeout(300)->withToken($this->apiKey)->post($this->url, $parameters);
         });
     }
 
@@ -148,7 +162,7 @@ class ExtractionPreparationCommand extends Command
         $date = Carbon::now()->isoFormat('YYYY-MM-DD');
 
         return <<<PROMPT
-        Ты система для работы с данными. Всегда отвечай ТОЛЬКО валидным Json. БЕЗ дополнительного текста. Твоя задача - категоризировать посты по категориям и создавать к ним промпты для генерации изображений.
+        Ты система для работы с данными. Твоя задача - категоризировать посты и создавать к ним промпты для генерации изображений. Всегда отвечай ТОЛЬКО валидным Json. БЕЗ дополнительного текста.
 
         Задача №1 - определить, является ли пост АНОНСОМ ТУРИСТИЧЕСКОГО мероприятия.
 
@@ -186,7 +200,7 @@ class ExtractionPreparationCommand extends Command
             - Длина промпта - не более 20 слов.
             - Промпт должен быть создан на основе description
 
-        Задача №4 - сформировать и вернуть Json с элементами со следующей структурой:
+        Задача №4 - сформировать и вернуть НОВЫЙ Json с элементами со следующей структурой:
             - title - заголовок (название мероприятия)
             - description - краткое описание мероприятия
             - date_time - дата и время начала мероприятия в формате dateTime (ISO 8601: YYYY-MM-DD HH:MM:SS)
@@ -208,3 +222,40 @@ class ExtractionPreparationCommand extends Command
         PROMPT;
     }
 }
+        // Проблема ясна осталось переписать промпт
+
+        // Исходный
+        // "id": 164,
+        // "peer": "t.me\/turist_jurist",
+        // "peer_id": -1001767496452,
+        // "post": 1,
+        // "post_id": 982,
+        // "date": "2026-03-24 05:21:38",
+        // "message": "Бодрого дня всем!  \nПриглашаю в пешеходные прогулки выходного дня🏔  Идём, не спешим, наслаждаемся природой.\n\n⛳️ 28 Марта - Суббота\nПоход на ЕСАУЛОВСКУЮ ПЕТЛЮ\n\n     Машинами едем до Бархатово.  Пойдем  обычным маршрутом  до ПЕТЛИ. На обратном пути зайдём на ЦАРСКУЮ горку , тропой Ленина  выйдем к машинам. \n   От поселка  комфортный подъем на ЕСАУЛОВСКУЮ петлю ( 4 км), оставшаяся часть маршрута ( 7 км) будет ещё комфортней, мы с ним легко справимся 💪.\n  С вершин прекрасный панорамный вид на долину реки Есауловка и ее окрестности.\n   🥾 Протяженность пешего маршрута не более 12 км. \n  Погуляем по лесу, подышим чистым воздухом.  Сделаем красивые фотографии.\n  Встречаемся: 09:30   Матросова 3, у магазина Красный Яр.\nВернемся  до 17\n☝В  походе мы не спешим, идём спокойным темпом,  каждый может остановиться в любой момент,  отдохнуть\/полюбоваться видом.\n   Одеваемся по погоде.\n  🏦 Стоимость похода:\nДля взрослых участников 900₽, для детей 500₽ и бесплатно для водителей (если берете 3-4 пассажиров).\nзапись по предоплате\n📞 89048955253.\n\nhttps:\/\/t.me\/turist_jurist\n\nhttps:\/\/max.ru\/join\/jzOxk7JN8F5BLgQkDJN3Zj2SirngshteMx62ImRemk4",
+        // "source": "https:\/\/t.me\/turist_jurist\/982",
+        // "ulid": "01KMFCVPH3WQV6WZX42K776KDA",
+        // "created_at": "2026-03-24T07:45:06.000000Z",
+        // "updated_at": "2026-03-24T07:45:06.000000Z"
+
+        // Новый
+        // "id": 164,
+        // "peer": "t.me/turist_jurist",
+        // "peer_id": -1001767496452,
+        // "post": 1,
+        // "post_id": 982,
+        // "date": "2026-03-24 05:21:38",
+        // "message": "Бодрого дня всем!  \nПриглашаю в пешеходные прогулки выходного дня🏔  Идём, не спешим, наслаждаемся природой.\n\n⛳️ 28 Марта - Суббота\nПоход на ЕСАУЛОВСКУЮ ПЕТЛЮ\n\n     Машинами едем до Бархатово.  Пойдем  обычным маршрутом  до ПЕТЛИ. На обратном пути зайдём на ЦАРСКУЮ горку , тропой Ленина  выйдем к машинам. \n   От поселка  комфортный подъем на ЕСАУЛОВСКУЮ петлю ( 4 км), оставшаяся часть маршрута ( 7 км) будет ещё комфортней, мы с ним легко справимся 💪.\n  С вершин прекрасный панорамный вид на долину реки Есауловка и ее окрестности.\n   🥾 Протяженность пешего маршрута не более 12 км. \n  Погуляем по лесу, подышим чистым воздухом.  Сделаем красивые фотографии.\n  Встречаемся: 09:30   Матросова 3, у магазина Красный Яр.\nВернемся  до 17\n☝В  походе мы не спешим, идём спокойным темпом,  каждый может остановиться в любой момент,  отдохнуть/полюбоваться видом.\n   Одеваемся по погоде.\n  🏦 Стоимость похода:\nДля взрослых участников 900₽, для детей 500₽ и бесплатно для водителей (если берете 3-4 пассажиров).\nзапись по предоплате\n📞 89048955253.\n\nhttps://t.me/turist_jurist\n\nhttps://max.ru/join/jzOxk7JN8F5BLgQkDJN3Zj2SirngshteMx62ImRemk4",
+        // "source": "https://t.me/turist_jurist/982",
+        // "ulid": "01KMFCVPH3WQV6WZX42K776KDA",
+        // "created_at": "2026-03-24T07:45:06.000000Z",
+        // "updated_at": "2026-03-24T07:45:06.000000Z",
+        
+        // "title": "Поход на Есауловскую петлю",
+        // "description": "Пешеходная прогулка на Есауловскую петлю с панорамными видами, поход по лесу, фотографии.",
+        // "date_time": "2026-03-28 09:30:00",
+        // "price_min": 500,
+        // "price_max": 900,
+        // "category": "Походы",
+        // "additional_category": "Фото",
+        // "child": true,
+        // "prompt": "A group of hikers enjoying panoramic views from a forested hilltop trail on a sunny day."
