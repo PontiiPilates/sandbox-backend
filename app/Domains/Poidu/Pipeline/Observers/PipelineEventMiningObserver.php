@@ -3,6 +3,7 @@
 namespace App\Domains\Poidu\Pipeline\Observers;
 
 use App\Domains\Poidu\Pipeline\Models\PipelineEventMining;
+use Illuminate\Support\Facades\Artisan;
 
 class PipelineEventMiningObserver
 {
@@ -11,7 +12,8 @@ class PipelineEventMiningObserver
      */
     public function created(PipelineEventMining $pipelineEventMining): void
     {
-        dd('Create');
+        // todo: maxAge заменить на обращение к пайплайну и понимание того, когда был сделан последний обход
+        Artisan::call('pipeline:parsing-telegram', ['pipelineId' => $pipelineEventMining->id]);
     }
 
     /**
@@ -19,7 +21,12 @@ class PipelineEventMiningObserver
      */
     public function updated(PipelineEventMining $pipelineEventMining): void
     {
-        //
+        match (key($pipelineEventMining->getChanges())) {
+            'parsing' => Artisan::call('pipeline:get-details', ['pipelineId' => $pipelineEventMining->id]),
+            'details' => Artisan::call('pipeline:get-prompt', ['pipelineId' => $pipelineEventMining->id]),
+            'prompt' => Artisan::call('pipeline:generate-preview', ['pipelineId' => $pipelineEventMining->id]),
+            default => null,
+        };
     }
 
     /**

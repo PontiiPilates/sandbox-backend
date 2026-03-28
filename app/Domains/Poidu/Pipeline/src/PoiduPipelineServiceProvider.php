@@ -2,6 +2,10 @@
 
 namespace App\Domains\Poidu\Pipeline\src;
 
+use App\Domains\Poidu\Pipeline\Console\GeneratePreviewCommand;
+use App\Domains\Poidu\Pipeline\Console\GetDetailsCommand;
+use App\Domains\Poidu\Pipeline\Console\GetPromptCommand;
+use App\Domains\Poidu\Pipeline\Console\ParsingTelegramCommand;
 use App\Domains\Poidu\Pipeline\Console\PipelineEventMiningCommand;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +17,11 @@ class PoiduPipelineServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->commands([
-            PipelineEventMiningCommand::class
+            PipelineEventMiningCommand::class,
+            ParsingTelegramCommand::class,
+            GetDetailsCommand::class,
+            GetPromptCommand::class,
+            GeneratePreviewCommand::class,
         ]);
     }
 

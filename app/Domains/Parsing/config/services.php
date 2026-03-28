@@ -6,13 +6,15 @@ include storage_path('app/private/parsing/telegram/sources/events_comunityes.php
 return [
     'parsing' => [
         'tg' => [
-            'api_id' => env('TG_API_ID'),
-            'api_hash' => env('TG_API_HASH'),
-
-            'path_to_session' => storage_path('app/private/parsing/telegram/session/api.madeline'),
-
-            'events_channels' => $eventsChannels,
-            'events_comunityes' => $eventsComunityes,
+            'madeline_proto' => [
+                'api_id' => env('TG_API_ID'),
+                'api_hash' => env('TG_API_HASH'),
+                'path_to_session' => storage_path('app/private/parsing/telegram/madeline-proto/session'),
+            ],
+            'sources' => [
+                'events_channels' => $eventsChannels,
+                'events_comunityes' => $eventsComunityes,
+            ],
         ],
 
         'vk' => [],

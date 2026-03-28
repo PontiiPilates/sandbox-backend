@@ -45,12 +45,12 @@ class TgEventsExtractCommand extends Command
             $this->rubicon = $this->rubicon->timestamp;
         }
 
-        $eventsChannels = config('services.parsing.tg.events_channels');
-        $eventsComunityes = config('services.parsing.tg.events_comunityes');
+        $eventsChannels = config('services.parsing.tg.sources.events_channels');
+        $eventsComunityes = config('services.parsing.tg.sources.events_comunityes');
 
         $settings = new AppInfo();
-        $settings->setApiId(config('services.parsing.tg.api_id'));
-        $settings->setApiHash(config('services.parsing.tg.api_hash'));
+        $settings->setApiId(config('services.parsing.tg.madeline_proto.api_id'));
+        $settings->setApiHash(config('services.parsing.tg.madeline_proto.api_hash'));
 
         if ($this->option('refresh')) {
             ExtractTgEvent::truncate();
@@ -58,7 +58,7 @@ class TgEventsExtractCommand extends Command
 
         // генерация клиента
         try {
-            $madelineProto = new API(config('services.parsing.tg.path_to_session'), $settings);
+            $madelineProto = new API(config('services.parsing.tg.madeline_proto.path_to_session'), $settings);
         } catch (\Throwable $th) {
             $this->line("Не удалось создать клиент. Вероятное решение: удалить сессию и авторизоваться вновь.");
             return __LINE__;

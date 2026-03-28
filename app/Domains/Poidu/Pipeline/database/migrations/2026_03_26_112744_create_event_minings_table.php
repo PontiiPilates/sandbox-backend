@@ -14,28 +14,27 @@ return new class extends Migration
         Schema::create('event_minings', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('category_id')->constrained();
+            // колонки для сырых данных
+            $table->char('peer')->comment('канал');
+            $table->bigInteger('peer_id')->comment('идентификатор канала');
+            $table->boolean('post')->nullable()->comment('пост/не пост');
+            $table->unsignedInteger('post_id')->nullable()->comment('идентификатор поста');
+            $table->dateTime('date')->comment('дата публикации поста');
+            $table->text('message')->comment('контент поста');
 
+            // колонки для обработанных данных
+            $table->foreignId('category_id')->constrained();
             $table->char('title');
             $table->text('description');
-            $table->text('content');
-
             $table->dateTime('date_time')->nullable();
-
             $table->integer('price_min');
             $table->integer('price_max');
-
-            $table->char('channel');
-            $table->bigInteger('channel_id');
-            $table->unsignedInteger('post_id');
-            $table->char('link_to_post');
-            $table->dateTime('post_was_created');
-
-            $table->boolean('approved')->default(false)->comment('одобрено для публикации');
-
             $table->text('prompt')->nullable()->comment('промпт для генерации preview');
             $table->char('preview')->nullable()->comment('имя сгенерированного изображения');
 
+            // общие колонки
+            $table->char('source')->comment('источник данных');
+            $table->boolean('approved')->default(false)->comment('одобрено для публикации');
             $table->integer('views')->default(0)->comment('количество просмотров');
 
             $table->timestamps();

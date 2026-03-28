@@ -7,22 +7,33 @@ use App\Domains\Parsing\Models\ExtractTgEvent;
 use App\Http\Controllers\Controller;
 use danog\MadelineProto\API;
 use danog\MadelineProto\Settings\AppInfo;
-use Illuminate\Http\Request;
 
 class ParsingController extends Controller
 {
     public function tgAuth()
     {
+        // создание конфигурации
         $settings = new AppInfo();
-        $settings->setApiId(config('services.parsing.tg.api_id'));
-        $settings->setApiHash(config('services.parsing.tg.api_hash'));
+        $settings->setApiId(config('services.parsing.tg.madeline_proto.api_id'));
+        $settings->setApiHash(config('services.parsing.tg.madeline_proto.api_hash'));
 
-        $madelineProto = new API(config('services.parsing.tg.path_to_session'), $settings);
-        $madelineProto->start();
+        // генерация клиента
+        try {
+            $madelineProto = new API(config('services.parsing.tg.madeline_proto.path_to_session'), $settings);
+        } catch (\Throwable $th) {
+            dump('Ошибка при создании клиента MadelineProto. Вероятно следует удалить сессию и авторизоваться вновь. Или выдать права на запись в лог.' . __LINE__);
+            return;
+        }
 
-        $me = $madelineProto->getSelf();
+        // установка соединения
+        try {
+            $madelineProto->start();
+        } catch (\Throwable $th) {
+            dump('Ошибка при создании клиента MadelineProto. Вероятно следует удалить сессию и авторизоваться вновь. Или выдать права на запись в лог.' . __LINE__);
+            return;
+        }
 
-        dd($me);
+        dd($madelineProto->getSelf());
     }
 
     public function showExtract()
