@@ -19,22 +19,22 @@ return new class extends Migration
             $table->bigInteger('peer_id')->comment('идентификатор канала');
             $table->boolean('post')->nullable()->comment('пост/не пост');
             $table->unsignedInteger('post_id')->nullable()->comment('идентификатор поста');
-            $table->dateTime('date')->comment('дата публикации поста');
+            $table->integer('date')->comment('дата публикации поста');
             $table->text('message')->comment('контент поста');
 
             // колонки для обработанных данных
-            $table->foreignId('category_id')->constrained();
-            $table->char('title');
-            $table->text('description');
+            $table->foreignId('category_id')->nullable()->constrained();
+            $table->char('title')->nullable();
+            $table->text('description')->nullable();
             $table->dateTime('date_time')->nullable();
-            $table->integer('price_min');
-            $table->integer('price_max');
+            $table->integer('price_min')->default(0);
+            $table->integer('price_max')->default(0);
             $table->text('prompt')->nullable()->comment('промпт для генерации preview');
             $table->char('preview')->nullable()->comment('имя сгенерированного изображения');
 
             // общие колонки
-            $table->char('source')->comment('источник данных');
-            $table->boolean('approved')->default(false)->comment('одобрено для публикации');
+            $table->char('source')->nullable()->comment('источник данных');
+            $table->boolean('approved')->default(1)->comment('одобрено для публикации');
             $table->integer('views')->default(0)->comment('количество просмотров');
 
             $table->timestamps();

@@ -53,9 +53,11 @@ class ParsingTelegramCommand extends Command
         $this->prepare();
         $this->createMtProtoClient();
 
+        dump("Начинается извлечение постов из Telegram");
         Log::channel('pipeline')->info("Начинается извлечение постов из Telegram");
 
         foreach ($this->eventsChannels as $channel) {
+            dump($channel);
             $this->line($channel);
 
             sleep($this->pause);
@@ -68,6 +70,7 @@ class ParsingTelegramCommand extends Command
                     'min_id' => EventMining::where('peer', $channel)->max('post_id'),
                 ]));
             } catch (\Throwable $th) {
+                dump("Возникла проблема при извлечении контента из канала {$channel}");
                 $this->warn("Возникла проблема при извлечении контента из канала {$channel}");
                 continue;
             }
@@ -75,9 +78,8 @@ class ParsingTelegramCommand extends Command
             $this->saveResult($channel, $messages);
         }
 
+        dump("Сохранено $this->saved из полученных $this->recived");
         Log::channel('pipeline')->info("Сохранено $this->saved из полученных $this->recived");
-
-        $this->info("Сохранено $this->saved из полученных $this->recived");
 
         $this->pipeline->update(['parsing' => now()]);
     }
@@ -85,10 +87,10 @@ class ParsingTelegramCommand extends Command
     private function prepare(): void
     {
         // определение даты, старше которой события будут отброшены
-        $this->lastDateCreate = EventMining::max('post_was_created');
+        $this->lastDateCreate = EventMining::max('date');
 
         if (!$this->lastDateCreate) {
-            $this->lastDateCreate = Carbon::now()->subDays($this->maxDays);
+            $this->lastDateCreate = Carbon::now()->subDays($this->maxDays)->timestamp;
         }
 
         // выбор пайплайна для работы
@@ -151,7 +153,7 @@ class ParsingTelegramCommand extends Command
 
                 'post' => $post->post,
                 'post_id' => $post->id,
-                'date' => Carbon::parse($post->date),
+                'date' => $post->date,
                 'message' => $post->message,
 
             ]);

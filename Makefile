@@ -47,3 +47,7 @@ pue:
 # бережно добавляет событиям изображения если есть иначе генерирует их
 icp:
 	sudo docker compose exec app php artisan illustrate:create-preview
+
+# инициирует пайплайн
+pinit:
+	sudo docker compose exec app php artisan pipeline:init-event-mining
