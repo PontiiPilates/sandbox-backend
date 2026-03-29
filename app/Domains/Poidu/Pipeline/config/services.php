@@ -21,5 +21,6 @@ return [
     ],
     'ai' => [
         'deepseek_api_key' => env('DEEPSEEK_API_KEY'),
+        'deepseek_url' => env('DEEPSEEK_URL'),
     ]
 ];

@@ -12,7 +12,6 @@ class PipelineEventMiningObserver
      */
     public function created(PipelineEventMining $pipelineEventMining): void
     {
-        // todo: maxAge заменить на обращение к пайплайну и понимание того, когда был сделан последний обход
         Artisan::call('pipeline:parsing-telegram', ['pipelineId' => $pipelineEventMining->id]);
     }
 
@@ -23,8 +22,10 @@ class PipelineEventMiningObserver
     {
         match (key($pipelineEventMining->getChanges())) {
             'parsing' => Artisan::call('pipeline:get-details', ['pipelineId' => $pipelineEventMining->id]),
-            'details' => Artisan::call('pipeline:get-prompt', ['pipelineId' => $pipelineEventMining->id]),
-            'prompt' => Artisan::call('pipeline:generate-preview', ['pipelineId' => $pipelineEventMining->id]),
+            'details' => Artisan::call('pipeline:update-details', ['pipelineId' => $pipelineEventMining->id]),
+            'update_details' => Artisan::call('pipeline:get-prompt', ['pipelineId' => $pipelineEventMining->id]),
+            'prompt' => Artisan::call('pipeline:update_prompt', ['pipelineId' => $pipelineEventMining->id]),
+            'update_prompt' => Artisan::call('pipeline:generate-preview', ['pipelineId' => $pipelineEventMining->id]),
             default => null,
         };
     }

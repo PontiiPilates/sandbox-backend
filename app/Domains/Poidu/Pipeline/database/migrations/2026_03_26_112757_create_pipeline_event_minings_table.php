@@ -16,7 +16,9 @@ return new class extends Migration
 
             $table->dateTime('parsing')->nullable()->comment('извлечение данных из telegram');
             $table->dateTime('details')->nullable()->comment('извлечение деталей поста');
+            $table->dateTime('update_details')->nullable()->comment('обновление новыми деталями');
             $table->dateTime('prompt')->nullable()->comment('создание промпта для генерации preview');
+            $table->dateTime('update_prompt')->nullable()->comment('создание промпта для генерации preview');
             $table->dateTime('preview')->nullable()->comment('генерация preview');
 
             $table->text('failed')->nullable()->comment('причина остановки пайплайна');

@@ -24,6 +24,7 @@ return new class extends Migration
 
             // колонки для обработанных данных
             $table->foreignId('category_id')->nullable()->constrained();
+            // $table->foreignId('additional_category_id')->nullable()->constrained(); // todo: здесь нужно добавить on table
             $table->char('title')->nullable();
             $table->text('description')->nullable();
             $table->dateTime('date_time')->nullable();

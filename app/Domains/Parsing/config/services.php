@@ -19,7 +19,7 @@ return [
 
         'vk' => [],
     ],
-    'ai' => [
+    'aix' => [
         'deepseek_api_key' => env('DEEPSEEK_API_KEY'),
     ]
 ];

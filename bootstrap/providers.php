@@ -10,6 +10,6 @@ return [
     App\Domains\Poidu\Pipeline\src\PoiduPipelineServiceProvider::class,
 
     // todo: отключить после завершения работы над пайплайнами
-    App\Domains\Parsing\src\ParsingServiceProvider::class,
-    App\Domains\Illustrate\src\IllustrateServiceProvider::class,
+    // App\Domains\Parsing\src\ParsingServiceProvider::class,
+    // App\Domains\Illustrate\src\IllustrateServiceProvider::class,
 ];
