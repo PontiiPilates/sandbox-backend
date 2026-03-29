@@ -38,12 +38,17 @@ class GetDetailsCommand extends Command
 
     private PipelineEventMining $pipeline;
 
+    private string $inputPath;
+    private string $outputPath;
 
     private function prepare()
     {
         $this->url = config('services.ai.deepseek_url');
         $this->apiKey = config('services.ai.deepseek_api_key');
         $this->dataInput = collect();
+
+        $this->inputPath = config('services.ai.input_path');
+        $this->outputPath = config('services.ai.output_path');
 
         $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
     }
@@ -128,7 +133,7 @@ class GetDetailsCommand extends Command
         $name = 'inputData_' . Carbon::now()->format('Y-m-d_H:i:s.u') . '.json';
         sleep(1);
 
-        Storage::put('poidu/pipeline/details/input/' . $name, $content);
+        Storage::put($this->inputPath . $name, $content);
     }
 
     private function saveOutputToJson($response): void
@@ -143,7 +148,7 @@ class GetDetailsCommand extends Command
             $response = Str::remove('```', $response);
         }
 
-        Storage::put('poidu/pipeline/details/output/' . $name, $response);
+        Storage::put($this->outputPath . $name, $response);
     }
 
     private function getSystemPrompt(): string

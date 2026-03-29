@@ -27,6 +27,7 @@ class GetPromptCommand extends Command
     public function handle()
     {
         dump('Создаю промпты');
+        dd("Управление передано успешно");
 
         $pipeline = PipelineEventMining::find($this->argument('pipelineId'));
         $pipeline->update(['prompt' => now()]);

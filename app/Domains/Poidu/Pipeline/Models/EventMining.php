@@ -17,6 +17,7 @@ class EventMining extends Model
 
         // колонки для обработанных данных
         'category_id',
+        'additional_category_id',
         'title',
         'description',
         'date_time',
@@ -29,5 +30,8 @@ class EventMining extends Model
         'source',
         'approved',
         'views',
+
+        // метаданные
+        'source_file',
     ];
 }

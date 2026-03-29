@@ -24,7 +24,7 @@ return new class extends Migration
 
             // колонки для обработанных данных
             $table->foreignId('category_id')->nullable()->constrained();
-            // $table->foreignId('additional_category_id')->nullable()->constrained(); // todo: здесь нужно добавить on table
+            $table->foreignId('additional_category_id')->nullable()->constrained(indexName: 'id');
             $table->char('title')->nullable();
             $table->text('description')->nullable();
             $table->dateTime('date_time')->nullable();
@@ -37,6 +37,9 @@ return new class extends Migration
             $table->char('source')->nullable()->comment('источник данных');
             $table->boolean('approved')->default(1)->comment('одобрено для публикации');
             $table->integer('views')->default(0)->comment('количество просмотров');
+            
+            // метаданные
+            $table->char('source_file')->nullable()->comment('источник данных');
 
             $table->timestamps();
         });

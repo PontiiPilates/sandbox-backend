@@ -12,6 +12,7 @@ class PipelineEventMining extends Model
     protected $fillable = [
         'parsing',
         'details',
+        'update_details',
         'prompt',
         'preview',
         'failed',

@@ -7,6 +7,8 @@ use App\Domains\Poidu\Pipeline\Console\GetDetailsCommand;
 use App\Domains\Poidu\Pipeline\Console\GetPromptCommand;
 use App\Domains\Poidu\Pipeline\Console\ParsingTelegramCommand;
 use App\Domains\Poidu\Pipeline\Console\PipelineEventMiningCommand;
+use App\Domains\Poidu\Pipeline\Console\UpdateDetailsCommand;
+use App\Domains\Poidu\Pipeline\Console\UpdatePromptCommand;
 use Illuminate\Support\ServiceProvider;
 
 class PoiduPipelineServiceProvider extends ServiceProvider
@@ -20,7 +22,9 @@ class PoiduPipelineServiceProvider extends ServiceProvider
             PipelineEventMiningCommand::class,
             ParsingTelegramCommand::class,
             GetDetailsCommand::class,
+            UpdateDetailsCommand::class,
             GetPromptCommand::class,
+            UpdatePromptCommand::class,
             GeneratePreviewCommand::class,
         ]);
     }
