@@ -21,7 +21,7 @@ class UpdateDetailsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'pipeline:update-details {pipelineId}';
+    protected $signature = 'pipeline:update-details {pipelineId?}';
 
     /**
      * The console command description.
@@ -39,10 +39,12 @@ class UpdateDetailsCommand extends Command
 
     private function prepare()
     {
-        $this->inputPath = config('services.ai.input_path');
-        $this->outputPath = config('services.ai.output_path');
+        $this->inputPath = "poidu/pipeline/details/input/";
+        $this->outputPath = "poidu/pipeline/details/output/";
 
-        $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
+        if ($this->argument('pipelineId')) {
+            $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
+        }
     }
 
     /**
@@ -112,6 +114,8 @@ class UpdateDetailsCommand extends Command
         $executionTime = $this->end();
         dump("Время обработки заняло $executionTime сек.");
 
-        $this->pipeline->update(['update_details' => now()]);
+        if ($this->argument('pipelineId')) {
+            $this->pipeline->update(['update_details' => now()]);
+        }
     }
 }

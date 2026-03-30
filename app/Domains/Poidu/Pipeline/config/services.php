@@ -22,7 +22,5 @@ return [
     'ai' => [
         'deepseek_api_key' => env('DEEPSEEK_API_KEY'),
         'deepseek_url' => env('DEEPSEEK_URL'),
-        'input_path' => env('DEEPSEEK_INPUT_PATH'),
-        'output_path' => env('DEEPSEEK_OUTPUT_PATH'),
     ]
 ];

@@ -4,6 +4,7 @@ namespace App\Domains\Poidu\Pipeline\Console;
 
 use App\Domains\Poidu\Pipeline\Models\EventMining;
 use App\Domains\Poidu\Pipeline\Models\PipelineEventMining;
+use App\Domains\Poidu\Pipeline\Traits\Prompts;
 use App\Domains\Poidu\Pipeline\Traits\Timer;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -16,6 +17,7 @@ use Illuminate\Support\Str;
 class GetDetailsCommand extends Command
 {
     use Timer;
+    use Prompts;
 
     /**
      * The name and signature of the console command.
@@ -63,16 +65,18 @@ class GetDetailsCommand extends Command
         $this->prepare();
 
         // создание структуры данных для передачи в ai
-        EventMining::where('category_id', null)->chunk(50, function ($posts) {
-            $this->dataInput->push($posts->map(function ($post) {
-                $this->countElementsToPrepare++;
-                return [
-                    'message' => $post->message,
-                    'peer_id' => $post->peer_id,
-                    'post_id' => $post->post_id,
-                ];
-            }));
-        });
+        EventMining::query()
+            ->where('category_id', null)
+            ->chunk(50, function ($posts) {
+                $this->dataInput->push($posts->map(function ($post) {
+                    $this->countElementsToPrepare++;
+                    return [
+                        'message' => $post->message,
+                        'peer_id' => $post->peer_id,
+                        'post_id' => $post->post_id,
+                    ];
+                }));
+            });
 
         dump("Отправлено {$this->countElementsToPrepare} элементов на обработку");
 
@@ -91,7 +95,7 @@ class GetDetailsCommand extends Command
             }
 
             $response = $response->object();
-            $totalTokens = $response->usage->total_tokens ?? 'unknown';
+            $totalTokens = $response->usage->total_tokens;
             dump("Объём токенов {$totalTokens}");
         }
 
@@ -111,7 +115,7 @@ class GetDetailsCommand extends Command
                 "messages" => [
                     [
                         "role" => "system",
-                        "content" => $this->getSystemPrompt(),
+                        "content" => $this->getPromptForDetails(),
                     ],
                     [
                         "role" => "user",
@@ -149,56 +153,5 @@ class GetDetailsCommand extends Command
         }
 
         Storage::put($this->outputPath . $name, $response);
-    }
-
-    private function getSystemPrompt(): string
-    {
-        $date = Carbon::now()->isoFormat('YYYY-MM-DD');
-
-        return <<<PROMPT
-        Ты система для обработки данных. Всегда отвечай ТОЛЬКО валидным JSON. Без дополнительного текста, пояснений или markdown.
-
-        Я передаю тебе коллекцию постов. Твоя задача — отфильтровать её, оставив только **анонсы туристических мероприятий**, и преобразовать их в новую JSON-коллекцию согласно схеме ниже.
-
-        ### Критерии отбора (ДОЛЖНЫ выполняться все условия):
-        Пост считается анонсом туристического мероприятия, если в поле "message" содержится:
-        - Указание на дату проведения (день, месяц), которая позже $date.
-        - Указание на время начала или контекстная привязка ко времени суток (утро, вечер).
-        - Указание на стоимость (сумма в рублях, слово "бесплатно", "донат" или фраза о том, что участие платное).
-        - Четкое описание активности (куда идем, что делаем).
-
-        ### Определение "Туристического мероприятия":
-        - **Точно туристические:** поход, сплав, экскурсия, спуск в пещеру (спелео), восхождение, прогулка, приключение, тур, фото-прогулка.
-        - **Около туристические:** соревнования на природе, йога на свежем воздухе, плоггинг (спорт+мусор), ориентирование.
-        - **Исключения (НЕ брать):** языковые курсы, нетворкинги, бизнес-встречи, мастер-классы в помещениях, спектакли, лекции без выезда на природу.
-
-        ### Категории:
-        - Походы
-        - Сплавы
-        - Экскурсии
-        - Туры
-        - С детьми
-        - Спелео
-        - Восхождения
-        - Соревнования
-        - Фото
-
-        ### Выходная схема (JSON-массив объектов):
-        Каждый объект должен содержать следующие поля:
-
-        | Поле | Источник / Правило |
-        |------|-------------------|
-        | `peer_id` | Скопировать из исходного поля `peer_id` |
-        | `post_id` | Скопировать из исходного поля `post_id` |
-        | `date_time` | Сформировать на основе `message` в формате `YYYY-MM-DD HH:MM:SS`. Если время не указано — `00:00:00` |
-        | `price_min` | Целое число. Если цена не указана — `0`. Если указана одна сумма — продублировать в `price_max` |
-        | `price_max` | Целое число. Если цена не указана — `0` |
-        | `category` | Основная категория из списка выше |
-        | `additional_category` | Дополнительная категория из списка (если применимо), иначе `null` |
-
-        ### Важно:
-        - Если пост **не соответствует всем критериям отбора** — НЕ включай его в результат.
-        - Результат всегда должен быть JSON-массивом. Если подходящих постов нет — верни `[]`.
-        PROMPT;
     }
 }

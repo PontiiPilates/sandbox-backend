@@ -20,6 +20,7 @@ class PipelineEventMiningObserver
      */
     public function updated(PipelineEventMining $pipelineEventMining): void
     {
+        // обновление поля $key запускает команду $value
         match (key($pipelineEventMining->getChanges())) {
             'parsing' => Artisan::call('pipeline:get-details', ['pipelineId' => $pipelineEventMining->id]),
             'details' => Artisan::call('pipeline:update-details', ['pipelineId' => $pipelineEventMining->id]),

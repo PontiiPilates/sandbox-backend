@@ -51,3 +51,7 @@ icp:
 # инициирует пайплайн
 pinit:
 	sudo docker compose exec app php artisan pipeline:init-event-mining
+
+# запускает этап обновления
+pdupdate:
+	sudo docker compose exec app php artisan pipeline:update-details
