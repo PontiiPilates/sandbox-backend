@@ -67,6 +67,7 @@ class UpdatePromptCommand extends Command
                 $eventMining = EventMining::where([
                     ['peer_id', '=', $post->peer_id],
                     ['post_id', '=', $post->post_id],
+                    ['prompt', '=', null],
                 ])->first();
 
                 // если запись не найдена, то переход к следующей итерации
