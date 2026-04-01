@@ -2,7 +2,7 @@
 
 namespace App\Domains\Poidu\App\Console;
 
-use App\Domains\Poidu\App\Models\Event;
+use App\Domains\Poidu\Pipeline\Models\EventMining;
 use Illuminate\Console\Command;
 
 class AddFakeViewCommand extends Command
@@ -26,7 +26,7 @@ class AddFakeViewCommand extends Command
      */
     public function handle()
     {
-        $events = Event::where('date_time', '>', now('Asia/Krasnoyarsk')->subDays(config('services.poidu.past_days')))->get();
+        $events = EventMining::where('date_time', '>', now('Asia/Krasnoyarsk')->subDays(config('services.poidu.past_days')))->get();
         
         $fakeViews = [
             1,1,1,1,1,1,1,1,1,1,

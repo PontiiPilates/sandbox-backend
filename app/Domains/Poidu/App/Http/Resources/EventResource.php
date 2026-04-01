@@ -14,6 +14,11 @@ class EventResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // dd([
+        //     $this,
+        //     new CategoryResource($this->category),
+        // ]);
+
         return [
             "id" => $this->id,
             "category" => new CategoryResource($this->category),
@@ -23,7 +28,7 @@ class EventResource extends JsonResource
             "time_start" => $this->time_start == '00:00' ? 'Уточняйте у организатора' : $this->time_start,
             "price_min" => $this->price_min,
             "price_max" => $this->price_max,
-            "link_to_post" => $this->link_to_post,
+            "link_to_post" => "https://{$this->peer}/{$this->post_id}",
             "is_active" => $this->isActive,
             "views" => $this->views,
             "approved" => $this->approved,

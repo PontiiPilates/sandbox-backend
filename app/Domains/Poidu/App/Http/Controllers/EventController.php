@@ -6,6 +6,7 @@ use App\Domains\Poidu\App\Http\Requests\EventRequest;
 use App\Domains\Poidu\App\Http\Requests\EventsRequest;
 use App\Domains\Poidu\App\Http\Resources\EventResource;
 use App\Domains\Poidu\App\Models\Event;
+use App\Domains\Poidu\Pipeline\Models\EventMining;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class EventController extends Controller
      */
     public function index(EventsRequest $request)
     {
-        $events = Event::query()
+        $events = EventMining::query()
             ->when($request->column, function ($q, $column) use ($request) {
                 $q->whereHas($column, function ($q) use ($request) {
                     $q->where('id', $request->value);
@@ -41,6 +42,10 @@ class EventController extends Controller
             ->where('approved', 1)
             ->orderBy('date_time')
             ->get();
+
+            // dd($events);
+
+        
 
         return EventResource::collection($events);
     }
