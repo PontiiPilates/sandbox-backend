@@ -24,7 +24,7 @@ class GetDetailsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'pipeline:get-details {pipelineId}';
+    protected $signature = 'pipeline:get-details {pipelineId?}';
 
     /**
      * The console command description.
@@ -49,10 +49,12 @@ class GetDetailsCommand extends Command
         $this->apiKey = config('services.ai.deepseek_api_key');
         $this->dataInput = collect();
 
-        $this->inputPath = config('services.ai.input_path');
-        $this->outputPath = config('services.ai.output_path');
+        $this->inputPath = "poidu/pipeline/details/input/";
+        $this->outputPath = "poidu/pipeline/details/output/";
 
-        $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
+        if ($this->argument('pipelineId')) {
+            $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
+        }
     }
 
     /**
@@ -64,9 +66,15 @@ class GetDetailsCommand extends Command
 
         $this->prepare();
 
-        // создание структуры данных для передачи в ai
+        // -------------------------------------------------------------+
+        // создание структуры данных для передачи в ai                  |
+        // на обработку будут переданы только еще необработанные данные |
+        // -------------------------------------------------------------+
+        $lastSuccessPrepare = PipelineEventMining::where('failed')->max('updated_at');
+
         EventMining::query()
             ->where('category_id', null)
+            ->where('created_at', '>', $lastSuccessPrepare)
             ->chunk(50, function ($posts) {
                 $this->dataInput->push($posts->map(function ($post) {
                     $this->countElementsToPrepare++;
@@ -82,10 +90,14 @@ class GetDetailsCommand extends Command
 
         $this->start();
 
-        // отправка запроса на обработку ai
+        // ---------------------------------+
+        // отправка запроса на обработку ai |
+        // ---------------------------------+
         $responses = Http::pool(fn(Pool $pool) => $this->getPools($pool));
 
-        // получение и обработка результата
+        // ---------------------------------+
+        // получение и обработка результата |
+        // ---------------------------------+
         foreach ($responses as $key => $response) {
 
             if ($response->successful()) {
@@ -102,7 +114,9 @@ class GetDetailsCommand extends Command
         $executionTime = $this->end();
         dump("Время обработки заняло $executionTime сек.");
 
-        $this->pipeline->update(['details' => now()]);
+        if ($this->argument('pipelineId')) {
+            $this->pipeline->update(['details' => now()]);
+        }
     }
 
     private function getPools(Pool $pool)

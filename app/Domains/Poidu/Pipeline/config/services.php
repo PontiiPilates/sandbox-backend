@@ -22,5 +22,8 @@ return [
     'ai' => [
         'deepseek_api_key' => env('DEEPSEEK_API_KEY'),
         'deepseek_url' => env('DEEPSEEK_URL'),
+
+        'replicate_api_token' => env('REPLICATE_API_TOKEN'),
+        'replicate_model_black_forest_url' => env('REPLICATE_MODEL_BLACK_FOREST_URL'),
     ]
 ];
