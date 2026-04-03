@@ -2,13 +2,13 @@
 
 namespace App\Domains\Poidu\Pipeline\src;
 
-use App\Domains\Poidu\Pipeline\src\Console\GeneratePreviewCommand;
-use App\Domains\Poidu\Pipeline\src\Console\GetDetailsCommand;
-use App\Domains\Poidu\Pipeline\src\Console\GetPromptCommand;
+use App\Domains\Poidu\Pipeline\src\Console\BeautifyCommand;
+use App\Domains\Poidu\Pipeline\src\Console\BeautifyUpdateCommand;
+use App\Domains\Poidu\Pipeline\src\Console\ClassifyCommand;
+use App\Domains\Poidu\Pipeline\src\Console\ClassifyUpdateCommand;
+use App\Domains\Poidu\Pipeline\src\Console\ImagenizeCommand;
 use App\Domains\Poidu\Pipeline\src\Console\ParsingTelegramCommand;
 use App\Domains\Poidu\Pipeline\src\Console\PipelineEventMiningCommand;
-use App\Domains\Poidu\Pipeline\src\Console\UpdateDetailsCommand;
-use App\Domains\Poidu\Pipeline\src\Console\UpdatePromptCommand;
 use Illuminate\Support\ServiceProvider;
 
 class PoiduPipelineServiceProvider extends ServiceProvider
@@ -21,11 +21,11 @@ class PoiduPipelineServiceProvider extends ServiceProvider
         $this->commands([
             PipelineEventMiningCommand::class,
             ParsingTelegramCommand::class,
-            GetDetailsCommand::class,
-            UpdateDetailsCommand::class,
-            GetPromptCommand::class,
-            UpdatePromptCommand::class,
-            GeneratePreviewCommand::class,
+            ClassifyCommand::class,
+            ClassifyUpdateCommand::class,
+            BeautifyCommand::class,
+            BeautifyUpdateCommand::class,
+            ImagenizeCommand::class,
         ]);
     }
 
