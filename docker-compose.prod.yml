@@ -1,0 +1,21 @@
+services:
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - 88:80
+    volumes:
+      - ./:/var/www/app
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/php/Dockerfile
+    working_dir: /var/www/app
+    volumes:
+      - ./:/var/www/app
+  adminer:
+    image: adminer:latest
+    network_mode: host
+    environment:
+      - DB_HOST=127.0.0.1
+      - DB_PORT=3306

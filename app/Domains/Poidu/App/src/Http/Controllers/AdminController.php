@@ -3,7 +3,7 @@
 namespace App\Domains\Poidu\App\src\Http\Controllers;
 
 use App\Domains\Poidu\App\src\Http\Resources\EventResource;
-use App\Domains\Poidu\App\src\Models\Event;
+use App\Domains\Poidu\Pipeline\src\Models\EventMining;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     public function events()
     {
-        $events = Event::query()
+        $events = EventMining::query()
             ->where('date_time', '>', now('Asia/Krasnoyarsk')->subDays(config('services.poidu.past_days')))
             ->orderBy('date_time')
             ->get();
@@ -21,7 +21,7 @@ class AdminController extends Controller
 
     public function public(Request $request)
     {
-        $event = Event::findOrFail($request->id)->update([
+        $event = EventMining::findOrFail($request->id)->update([
             'approved' => 1,
         ]);
 
@@ -34,7 +34,7 @@ class AdminController extends Controller
 
     public function unPublic(Request $request)
     {
-        $event = Event::findOrFail($request->id)->update([
+        $event = EventMining::findOrFail($request->id)->update([
             'approved' => 0,
         ]);
 
