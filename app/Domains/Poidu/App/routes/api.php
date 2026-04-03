@@ -1,9 +1,9 @@
 <?php
 
-use App\Domains\Poidu\App\Http\Controllers\AdminController;
-use App\Domains\Poidu\App\Http\Controllers\CategoryController;
-use App\Domains\Poidu\App\Http\Controllers\EventController;
-use App\Domains\Poidu\App\Http\Controllers\PoiduController;
+use App\Domains\Poidu\App\src\Http\Controllers\AdminController;
+use App\Domains\Poidu\App\src\Http\Controllers\CategoryController;
+use App\Domains\Poidu\App\src\Http\Controllers\EventController;
+use App\Domains\Poidu\App\src\Http\Controllers\PoiduController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api/v1/poidu')->group(function () {

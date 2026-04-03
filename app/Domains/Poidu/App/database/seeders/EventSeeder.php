@@ -2,7 +2,7 @@
 
 namespace App\Domains\Poidu\App\database\seeders;
 
-use App\Domains\Poidu\App\Models\Category;
+use App\Domains\Poidu\App\src\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

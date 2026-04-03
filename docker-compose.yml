@@ -17,6 +17,7 @@ services:
       # - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
       # - ./docker/supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
 
+  # only local host
   mysql:
     image: mysql:8.4
     ports:
@@ -30,18 +31,18 @@ services:
       MYSQL_ROOT_PASSWORD: "root"
     restart: unless-stopped
 
-  backup:
-    image: jkaninda/mysql-bkup
-    command: backup --cron-expression "0 1 * * *" # каждый день в 1:00
-    volumes:
-      - ./docker/mysql/backups:/backup
-    environment:
-      - DB_HOST=mysql
-      - DB_PORT=3306
-      - DB_NAME=sandbox
-      - DB_USERNAME=root
-      - DB_PASSWORD=root
-    restart: unless-stopped
+  # backup:
+  #   image: jkaninda/mysql-bkup
+  #   command: backup --cron-expression "0 1 * * *" # каждый день в 1:00
+  #   volumes:
+  #     - ./docker/mysql/backups:/backup
+  #   environment:
+  #     - DB_HOST=mysql
+  #     - DB_PORT=3306
+  #     - DB_NAME=sandbox
+  #     - DB_USERNAME=root
+  #     - DB_PASSWORD=root
+  #   restart: unless-stopped
 
   # redis:
   #   image: 'redis:alpine'
@@ -67,6 +68,7 @@ services:
   #     - 1025:1025
   #     - 8025:8025
 
+  # local host
   adminer:
     image: adminer:latest
     ports:
@@ -75,3 +77,12 @@ services:
       - ADMINER_DEFAULT_SERVER=${DB_HOST}
     depends_on:
       - mysql
+
+
+  # remote host
+  # adminer:
+  #   image: adminer:latest
+  #   network_mode: host
+  #   environment:
+  #     - DB_HOST=127.0.0.1
+  #     - DB_PORT=3306

@@ -28,4 +28,4 @@ use Illuminate\Support\Facades\Schedule;
 //  22 > 05
 //  23 > 06
 
-Schedule::command('illustrate:create-preview')->twiceDaily(2, 8);
+Schedule::command('pipeline:init-event-mining')->twiceDaily(2, 8);

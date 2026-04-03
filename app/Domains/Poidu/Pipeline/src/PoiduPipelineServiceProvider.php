@@ -2,13 +2,13 @@
 
 namespace App\Domains\Poidu\Pipeline\src;
 
-use App\Domains\Poidu\Pipeline\Console\GeneratePreviewCommand;
-use App\Domains\Poidu\Pipeline\Console\GetDetailsCommand;
-use App\Domains\Poidu\Pipeline\Console\GetPromptCommand;
-use App\Domains\Poidu\Pipeline\Console\ParsingTelegramCommand;
-use App\Domains\Poidu\Pipeline\Console\PipelineEventMiningCommand;
-use App\Domains\Poidu\Pipeline\Console\UpdateDetailsCommand;
-use App\Domains\Poidu\Pipeline\Console\UpdatePromptCommand;
+use App\Domains\Poidu\Pipeline\src\Console\GeneratePreviewCommand;
+use App\Domains\Poidu\Pipeline\src\Console\GetDetailsCommand;
+use App\Domains\Poidu\Pipeline\src\Console\GetPromptCommand;
+use App\Domains\Poidu\Pipeline\src\Console\ParsingTelegramCommand;
+use App\Domains\Poidu\Pipeline\src\Console\PipelineEventMiningCommand;
+use App\Domains\Poidu\Pipeline\src\Console\UpdateDetailsCommand;
+use App\Domains\Poidu\Pipeline\src\Console\UpdatePromptCommand;
 use Illuminate\Support\ServiceProvider;
 
 class PoiduPipelineServiceProvider extends ServiceProvider
