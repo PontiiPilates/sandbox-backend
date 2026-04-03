@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 class PipelineEventMining extends Model
 {
     protected $fillable = [
-        'parsing',
-        'details',
-        'update_details',
-        'prompt',
-        'preview',
+        '1_parsing',
+        '2_classify',
+        '3_classify_update',
+        '4_beautify',
+        '5_beautify_update',
+        '6_imagenize',
         'failed',
     ];
 }

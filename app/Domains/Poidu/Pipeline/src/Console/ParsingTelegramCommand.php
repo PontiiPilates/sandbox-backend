@@ -20,7 +20,7 @@ class ParsingTelegramCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'pipeline:parsing-telegram {pipelineId : идентификатор пайплайна}';
+    protected $signature = 'pipeline:parsing-telegram {pipelineId?}';
 
     /**
      * The console command description.
@@ -81,7 +81,9 @@ class ParsingTelegramCommand extends Command
         dump("Сохранено $this->saved из полученных $this->recived");
         Log::channel('pipeline')->info("Сохранено $this->saved из полученных $this->recived");
 
-        $this->pipeline->update(['parsing' => now()]);
+        if ($this->argument('pipelineId')) {
+            $this->pipeline->update(['1_parsing' => now()]);
+        }
     }
 
     private function prepare(): void
@@ -94,7 +96,9 @@ class ParsingTelegramCommand extends Command
         }
 
         // выбор пайплайна для работы
-        $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
+        if ($this->argument('pipelineId')) {
+            $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
+        }
 
         // создание источников для парсинга
         $this->eventsChannels = config('services.parsing.tg.sources.events_channels');

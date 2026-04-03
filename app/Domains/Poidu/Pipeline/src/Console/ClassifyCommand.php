@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class GetDetailsCommand extends Command
+class ClassifyCommand extends Command
 {
     use Timer;
     use Prompts;
@@ -24,14 +24,14 @@ class GetDetailsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'pipeline:get-details {pipelineId?}';
+    protected $signature = 'pipeline:classify {pipelineId?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Возвращает детали мероприятия';
+    protected $description = 'Классифицирует пост';
 
     private string $url;
     private string $apiKey;
@@ -49,8 +49,8 @@ class GetDetailsCommand extends Command
         $this->apiKey = config('services.ai.deepseek_api_key');
         $this->dataInput = collect();
 
-        $this->inputPath = "poidu/pipeline/details/input/";
-        $this->outputPath = "poidu/pipeline/details/output/";
+        $this->inputPath = "poidu/pipeline/classify/input/";
+        $this->outputPath = "poidu/pipeline/classify/output/";
 
         if ($this->argument('pipelineId')) {
             $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
@@ -115,7 +115,7 @@ class GetDetailsCommand extends Command
         dump("Время обработки заняло $executionTime сек.");
 
         if ($this->argument('pipelineId')) {
-            $this->pipeline->update(['details' => now()]);
+            $this->pipeline->update(['2_classify' => now()]);
         }
     }
 

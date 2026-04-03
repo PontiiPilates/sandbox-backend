@@ -20,13 +20,12 @@ class PipelineEventMiningObserver
      */
     public function updated(PipelineEventMining $pipelineEventMining): void
     {
-        // обновление поля $key запускает команду $value
         match (key($pipelineEventMining->getChanges())) {
-            'parsing' => Artisan::call('pipeline:get-details', ['pipelineId' => $pipelineEventMining->id]),
-            'details' => Artisan::call('pipeline:update-details', ['pipelineId' => $pipelineEventMining->id]),
-            'update_details' => Artisan::call('pipeline:get-prompt', ['pipelineId' => $pipelineEventMining->id]),
-            'prompt' => Artisan::call('pipeline:update_prompt', ['pipelineId' => $pipelineEventMining->id]),
-            'update_prompt' => Artisan::call('pipeline:generate-preview', ['pipelineId' => $pipelineEventMining->id]),
+            '1_parsing' => Artisan::call('pipeline:classify', ['pipelineId' => $pipelineEventMining->id]),
+            '2_classify' => Artisan::call('pipeline:classify-update', ['pipelineId' => $pipelineEventMining->id]),
+            '3_classify_update' => Artisan::call('pipeline:beautify', ['pipelineId' => $pipelineEventMining->id]),
+            '4_beautify' => Artisan::call('pipeline:beautify-update', ['pipelineId' => $pipelineEventMining->id]),
+            '5_beautify_update' => Artisan::call('pipeline:imagenize', ['pipelineId' => $pipelineEventMining->id]),
             default => null,
         };
     }

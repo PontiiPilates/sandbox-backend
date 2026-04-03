@@ -2,45 +2,41 @@
 
 namespace App\Domains\Poidu\Pipeline\src\Console;
 
-use App\Domains\Poidu\App\src\Models\Category;
 use App\Domains\Poidu\Pipeline\src\Models\EventMining;
 use App\Domains\Poidu\Pipeline\src\Models\PipelineEventMining;
-use App\Domains\Poidu\Pipeline\src\Traits\PipelineLogger;
 use App\Domains\Poidu\Pipeline\src\Traits\Timer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
-class UpdateDetailsCommand extends Command
+class BeautifyUpdateCommand extends Command
 {
     use Timer;
-    use PipelineLogger;
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'pipeline:update-details {pipelineId?}';
+    protected $signature = 'pipeline:beautify-update {pipelineId?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Обновляет новыми деталями';
+    protected $description = 'Обновляет промпт, заголовок, описание';
+
+    private string $inputPath;
+    private string $outputPath;
 
     private int $countAddedPosts = 0;
 
     private PipelineEventMining $pipeline;
 
-    private string $inputPath;
-    private string $outputPath;
-
     private function prepare()
     {
-        $this->inputPath = "poidu/pipeline/details/input/";
-        $this->outputPath = "poidu/pipeline/details/output/";
+        $this->inputPath = "poidu/pipeline/beautify/input/";
+        $this->outputPath = "poidu/pipeline/beautify/output/";
 
         if ($this->argument('pipelineId')) {
             $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
@@ -52,15 +48,13 @@ class UpdateDetailsCommand extends Command
      */
     public function handle()
     {
-        dump("Начинается добавление деталей");
+        dump("Начинается добавление промптов");
         $this->start();
-
 
         $this->prepare();
 
         $files = Storage::allFiles($this->outputPath);
         $files = collect($files);
-
 
         $files->each(function ($file) {
             $json = Storage::json($file);
@@ -73,7 +67,7 @@ class UpdateDetailsCommand extends Command
                 $eventMining = EventMining::where([
                     ['peer_id', '=', $post->peer_id],
                     ['post_id', '=', $post->post_id],
-                    ['source_file', '=', null],
+                    ['prompt', '=', null],
                 ])->first();
 
                 // если запись не найдена, то переход к следующей итерации
@@ -81,21 +75,14 @@ class UpdateDetailsCommand extends Command
                     return;
                 }
 
-                // получение категорий
-                $category = Category::where('category', $post->category)->first();
-                $additionalCategory = Category::when($post->category, function ($q, $category) use ($post) {
-                    $q->where('category', $post->category)->first();
-                });
-
                 // обновление полученной записи
                 try {
                     $eventMining->update([
-                        'date_time' => $post->date_time,
-                        'price_min' => $post->price_min,
-                        'price_max' => $post->price_max,
-                        'category_id' => $category->id,
-                        'additional_category' => $additionalCategory,
-                        'source_file' => Str::after($file, $this->outputPath),
+                        'peer_id' => $post->peer_id,
+                        'post_id' => $post->post_id,
+                        'title' => $post->title,
+                        'description' => $post->description,
+                        'prompt' => $post->prompt,
                     ]);
                 } catch (\Throwable $th) {
                     dump("Не удалось обнаружить событие peer_id {$post->peer_id}, post_id {$post->post_id} для обновления");
@@ -115,7 +102,7 @@ class UpdateDetailsCommand extends Command
         dump("Время обработки заняло $executionTime сек.");
 
         if ($this->argument('pipelineId')) {
-            $this->pipeline->update(['update_details' => now()]);
+            $this->pipeline->update(['5_beautify_update' => now()]);
         }
     }
 }

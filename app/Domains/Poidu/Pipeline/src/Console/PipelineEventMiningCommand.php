@@ -19,13 +19,13 @@ class PipelineEventMiningCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Init pipeline';
+    protected $description = 'Инициализация пайплайна';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        PipelineEventMining::create([]); // init pipeline
+        PipelineEventMining::create([]);
     }
 }

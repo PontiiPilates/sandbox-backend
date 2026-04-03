@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('pipeline_event_minings', function (Blueprint $table) {
             $table->id();
 
-            $table->dateTime('parsing')->nullable()->comment('извлечение данных из telegram');
-            $table->dateTime('details')->nullable()->comment('извлечение деталей поста');
-            $table->dateTime('update_details')->nullable()->comment('обновление новыми деталями');
-            $table->dateTime('prompt')->nullable()->comment('создание промпта для генерации preview');
-            $table->dateTime('update_prompt')->nullable()->comment('создание промпта для генерации preview');
-            $table->dateTime('preview')->nullable()->comment('генерация preview');
+            $table->dateTime('1_parsing')->nullable()->comment('извлечение данных из telegram');
+            $table->dateTime('2_classify')->nullable()->comment('классификация поста');
+            $table->dateTime('3_classify_update')->nullable()->comment('обновление классифицированными данными');
+            $table->dateTime('4_beautify')->nullable()->comment('создание промпта, заголовка, описания');
+            $table->dateTime('5_beautify_update')->nullable()->comment('обновление промптом, заголовком, описанием');
+            $table->dateTime('6_imagenize')->nullable()->comment('иллюстрация контента');
 
             $table->text('failed')->nullable()->comment('причина остановки пайплайна');
 

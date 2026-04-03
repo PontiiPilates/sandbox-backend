@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-// todo rename on a Beautify
-class GetPromptCommand extends Command
+class BeautifyCommand extends Command
 {
     use Timer;
     use Prompts;
@@ -27,14 +26,14 @@ class GetPromptCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'pipeline:get-prompt {pipelineId?}';
+    protected $signature = 'pipeline:beautify {pipelineId?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Возвращает промпты для генерации preview';
+    protected $description = 'Создаёт промпт, заголовок, описание';
 
     private string $url;
     private string $apiKey;
@@ -111,7 +110,7 @@ class GetPromptCommand extends Command
         dump("Время обработки заняло $executionTime сек.");
 
         if ($this->argument('pipelineId')) {
-            $this->pipeline->update(['prompt' => now()]);
+            $this->pipeline->update(['4_beautify' => now()]);
         }
     }
 

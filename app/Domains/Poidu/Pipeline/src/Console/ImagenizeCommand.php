@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use stdClass;
 
-class GeneratePreviewCommand extends Command
+class ImagenizeCommand extends Command
 {
     use Timer;
 
@@ -20,14 +20,14 @@ class GeneratePreviewCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'pipeline:generate-preview {pipelineId?}';
+    protected $signature = 'pipeline:imagenize {pipelineId?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Генерация preview для мероприятия';
+    protected $description = 'Наполняет посты имеющимися изображениями. Генерирует новые изображение.';
 
     private string $url;
     private string $apiKey;
@@ -45,7 +45,6 @@ class GeneratePreviewCommand extends Command
         $this->url = config('services.ai.replicate_model_black_forest_url');
         $this->apiKey = config('services.ai.replicate_api_token');
 
-        // $this->inputPath = "poidu/pipeline/preview/input/";
         $this->outputPath = "previews/";
 
         if ($this->argument('pipelineId')) {
@@ -122,7 +121,7 @@ class GeneratePreviewCommand extends Command
         dump("Время обработки заняло $executionTime сек.");
 
         if ($this->argument('pipelineId')) {
-            $this->pipeline->update(['preview' => now()]);
+            $this->pipeline->update(['6_imagenize' => now()]);
         }
     }
 
