@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pipeline_event_minings', function (Blueprint $table) {
+        Schema::create('pipeline_events_mining', function (Blueprint $table) {
             $table->id();
 
             $table->dateTime('1_parsing')->nullable()->comment('извлечение данных из telegram');
@@ -32,6 +32,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pipeline_event_minings');
+        Schema::dropIfExists('pipeline_events_mining
+        ');
     }
 };

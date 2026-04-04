@@ -14,7 +14,6 @@ rebuild:
 recreate:
 	sudo docker compose exec app php artisan db:wipe
 	sudo docker compose exec app php artisan migrate:refresh --seed
-	sudo docker compose exec app php artisan parsing:update-events
 
 # +------------------------------------------------------+
 # Блок алиасов для отдельных команд в логическом порядке |
