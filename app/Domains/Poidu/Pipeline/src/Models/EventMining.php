@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EventMining extends Model
 {
+    protected $table = 'events_mining';
+
     protected $fillable = [
         // колонки для сырых данных
         'peer',

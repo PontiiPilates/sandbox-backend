@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_minings', function (Blueprint $table) {
+        Schema::create('events_mining', function (Blueprint $table) {
             $table->id();
 
             // колонки для сырых данных
@@ -50,6 +50,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('event_minings');
+        Schema::dropIfExists('events_mining');
     }
 };

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 #[ObservedBy([PipelineEventMiningObserver::class])]
 class PipelineEventMining extends Model
 {
+    protected $table = 'pipeline_events_mining';
+
     protected $fillable = [
         '1_parsing',
         '2_classify',

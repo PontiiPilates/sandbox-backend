@@ -6,6 +6,8 @@ services:
     volumes:
       - ./:/var/www/app
       - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - app
 
   app:
     build:
