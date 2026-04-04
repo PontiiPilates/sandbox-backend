@@ -62,7 +62,7 @@ class ClassifyCommand extends Command
      */
     public function handle()
     {
-        dump("Начинается извлечение полезных данных");
+        dump("Начинается классификация постов");
 
         $this->prepare();
 
@@ -70,11 +70,13 @@ class ClassifyCommand extends Command
         // создание структуры данных для передачи в ai                  |
         // на обработку будут переданы только еще необработанные данные |
         // -------------------------------------------------------------+
-        $lastSuccessPrepare = PipelineEventMining::where('failed')->max('updated_at');
+        $lastSuccessPrepare = PipelineEventMining::where('failed')->max('2_classify');
 
         EventMining::query()
             ->where('category_id', null)
-            ->where('created_at', '>', $lastSuccessPrepare)
+            ->when($lastSuccessPrepare, function ($q, $lastSuccessPrepare) {
+                $q->where('created_at', '>', $lastSuccessPrepare);
+            })
             ->chunk(50, function ($posts) {
                 $this->dataInput->push($posts->map(function ($post) {
                     $this->countElementsToPrepare++;

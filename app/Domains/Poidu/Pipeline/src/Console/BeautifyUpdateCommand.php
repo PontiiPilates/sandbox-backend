@@ -26,7 +26,6 @@ class BeautifyUpdateCommand extends Command
      */
     protected $description = 'Обновляет промпт, заголовок, описание';
 
-    private string $inputPath;
     private string $outputPath;
 
     private int $countAddedPosts = 0;
@@ -35,7 +34,6 @@ class BeautifyUpdateCommand extends Command
 
     private function prepare()
     {
-        $this->inputPath = "poidu/pipeline/beautify/input/";
         $this->outputPath = "poidu/pipeline/beautify/output/";
 
         if ($this->argument('pipelineId')) {
@@ -48,7 +46,7 @@ class BeautifyUpdateCommand extends Command
      */
     public function handle()
     {
-        dump("Начинается добавление промптов");
+        dump("Начинается обновление заголовка, описания и промпта");
         $this->start();
 
         $this->prepare();

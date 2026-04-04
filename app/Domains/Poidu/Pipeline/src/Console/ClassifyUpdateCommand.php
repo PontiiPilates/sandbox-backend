@@ -34,13 +34,11 @@ class ClassifyUpdateCommand extends Command
 
     private PipelineEventMining $pipeline;
 
-    private string $inputPath;
     private string $outputPath;
 
     private function prepare()
     {
-        $this->inputPath = "poidu/pipeline/details/input/";
-        $this->outputPath = "poidu/pipeline/details/output/";
+        $this->outputPath = "poidu/pipeline/classify/output/";
 
         if ($this->argument('pipelineId')) {
             $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
@@ -52,7 +50,7 @@ class ClassifyUpdateCommand extends Command
      */
     public function handle()
     {
-        dump("Начинается добавление деталей");
+        dump("Начинается обновление классифицированными данными");
         $this->start();
 
 

@@ -52,8 +52,8 @@ class BeautifyCommand extends Command
         $this->apiKey = config('services.ai.deepseek_api_key');
         $this->dataInput = collect();
 
-        $this->inputPath = "poidu/pipeline/prompt/input/";
-        $this->outputPath = "poidu/pipeline/prompt/output/";
+        $this->inputPath = "poidu/pipeline/beautify/input/";
+        $this->outputPath = "poidu/pipeline/beautify/output/";
 
         if ($this->argument('pipelineId')) {
             $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
@@ -65,7 +65,7 @@ class BeautifyCommand extends Command
      */
     public function handle()
     {
-        dump("Начинается извлечение полезных данных");
+        dump("Начинается создание заголовка, описания и промпта");
 
         $this->prepare();
 
