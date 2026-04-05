@@ -6,7 +6,6 @@ return [
     /**
      * Domains
      */
-    App\Domains\Poidu\src\PoiduServiceProvider::class,
-    App\Domains\Parsing\src\ParsingServiceProvider::class,
-    App\Domains\Illustrate\src\IllustrateServiceProvider::class,
+    App\Domains\Poidu\App\src\PoiduAppServiceProvider::class,
+    App\Domains\Poidu\Pipeline\src\PoiduPipelineServiceProvider::class,
 ];
