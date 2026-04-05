@@ -14,7 +14,6 @@ rebuild:
 recreate:
 	sudo docker compose exec app php artisan db:wipe
 	sudo docker compose exec app php artisan migrate:refresh --seed
-	sudo docker compose exec app php artisan parsing:update-events
 
 # +------------------------------------------------------+
 # Блок алиасов для отдельных команд в логическом порядке |
@@ -47,3 +46,35 @@ pue:
 # бережно добавляет событиям изображения если есть иначе генерирует их
 icp:
 	sudo docker compose exec app php artisan illustrate:create-preview
+
+# ---------+
+# пайплайн |
+# ---------+
+
+# инициирует пайплайн
+pinit:
+	sudo docker compose exec app php artisan pipeline:init-event-mining
+
+# парсинг telegrem
+ppt: 
+	sudo docker compose exec app php artisan pipeline:parsing-telegram $(pid)
+
+# классификация постов
+pc:
+	sudo docker compose exec app php artisan pipeline:classify $(pid)
+
+# обновление классифицированными данными
+pcu:
+	sudo docker compose exec app php artisan pipeline:classify-update $(pid)
+
+# создание заголовка, описание и промпта
+pb:
+	sudo docker compose exec app php artisan pipeline:beautify $(pid)
+
+# обновление заголовка, описания и промпта
+pbu:
+	sudo docker compose exec app php artisan pipeline:beautify-update $(pid)
+
+# создание изображения
+pi:
+	sudo docker compose exec app php artisan pipeline:imagenize $(pid)

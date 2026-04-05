@@ -1,0 +1,106 @@
+<?php
+
+namespace App\Domains\Poidu\Pipeline\src\Console;
+
+use App\Domains\Poidu\Pipeline\src\Models\EventMining;
+use App\Domains\Poidu\Pipeline\src\Models\PipelineEventMining;
+use App\Domains\Poidu\Pipeline\src\Traits\Timer;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
+
+class BeautifyUpdateCommand extends Command
+{
+    use Timer;
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'pipeline:beautify-update {pipelineId?}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Обновляет промпт, заголовок, описание';
+
+    private string $outputPath;
+
+    private int $countAddedPosts = 0;
+
+    private PipelineEventMining $pipeline;
+
+    private function prepare()
+    {
+        $this->outputPath = "poidu/pipeline/beautify/output/";
+
+        if ($this->argument('pipelineId')) {
+            $this->pipeline = PipelineEventMining::find($this->argument('pipelineId'));
+        }
+    }
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
+    {
+        dump("Начинается обновление заголовка, описания и промпта");
+        $this->start();
+
+        $this->prepare();
+
+        $files = Storage::allFiles($this->outputPath);
+        $files = collect($files);
+
+        $files->each(function ($file) {
+            $json = Storage::json($file);
+            $json = collect($json);
+
+            $json->each(function ($post) use ($file) {
+                $post = (object) $post;
+
+                // получение сырой записи
+                $eventMining = EventMining::where([
+                    ['peer_id', '=', $post->peer_id],
+                    ['post_id', '=', $post->post_id],
+                    ['prompt', '=', null],
+                ])->first();
+
+                // если запись не найдена, то переход к следующей итерации
+                if (!$eventMining) {
+                    return;
+                }
+
+                // обновление полученной записи
+                try {
+                    $eventMining->update([
+                        'peer_id' => $post->peer_id,
+                        'post_id' => $post->post_id,
+                        'title' => $post->title,
+                        'description' => $post->description,
+                        'prompt' => $post->prompt,
+                    ]);
+                } catch (\Throwable $th) {
+                    dump("Не удалось обнаружить событие peer_id {$post->peer_id}, post_id {$post->post_id} для обновления");
+                    $this->failed($this->pipeline, "Не удалось обнаружить событие peer_id {$post->peer_id}, post_id {$post->post_id} для обновления");
+                    return;
+                }
+
+                if ($eventMining) {
+                    $this->countAddedPosts++;
+                }
+            });
+        });
+
+        dump("Обновлено {$this->countAddedPosts} мероприятий");
+
+        $executionTime = $this->end();
+        dump("Время обработки заняло $executionTime сек.");
+
+        if ($this->argument('pipelineId')) {
+            $this->pipeline->update(['5_beautify_update' => now()]);
+        }
+    }
+}
