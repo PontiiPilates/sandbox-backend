@@ -17,7 +17,7 @@ class CategoryResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->category,
-            "count" => $this->events->count(),
+            "count" => $this->eventsMining->count(),
         ];
     }
 }

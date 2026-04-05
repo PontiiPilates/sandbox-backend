@@ -25,7 +25,7 @@ class PipelineEventMiningObserver
             '2_classify' => Artisan::call('pipeline:classify-update', ['pipelineId' => $pipelineEventMining->id]),
             '3_classify_update' => Artisan::call('pipeline:beautify', ['pipelineId' => $pipelineEventMining->id]),
             '4_beautify' => Artisan::call('pipeline:beautify-update', ['pipelineId' => $pipelineEventMining->id]),
-            '5_beautify_update' => Artisan::call('pipeline:imagenize', ['pipelineId' => $pipelineEventMining->id]),
+            // '5_beautify_update' => Artisan::call('pipeline:imagenize', ['pipelineId' => $pipelineEventMining->id]),
             default => null,
         };
     }

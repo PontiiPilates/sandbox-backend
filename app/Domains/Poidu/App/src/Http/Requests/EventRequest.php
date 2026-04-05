@@ -30,7 +30,7 @@ class EventRequest extends FormRequest
     {
         return [
             // 'id' => 'exists:events,id',
-            'id' => 'exists:event_minings,id',
+            'id' => 'exists:events_mining,id',
         ];
     }
 }
