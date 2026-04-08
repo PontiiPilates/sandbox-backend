@@ -33,4 +33,4 @@ auth.json
 /docker/mysql/backups/*
 .vscode
 
-.docker-compose.yml
+docker-compose.yml
