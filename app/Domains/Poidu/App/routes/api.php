@@ -6,7 +6,7 @@ use App\Domains\Poidu\App\src\Http\Controllers\EventController;
 use App\Domains\Poidu\App\src\Http\Controllers\PoiduController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('api/v1/poidu')->group(function () {
+Route::prefix('api/v1/poidu')->name('api.v1.poidu')->group(function () {
     Route::get('/ping', [PoiduController::class, 'ping'])->name('ping');
     Route::get('/seo', [PoiduController::class, 'seo'])->name('seo');
 

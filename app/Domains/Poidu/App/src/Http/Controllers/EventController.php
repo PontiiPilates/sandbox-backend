@@ -6,48 +6,24 @@ use App\Domains\Poidu\App\src\Http\Requests\EventRequest;
 use App\Domains\Poidu\App\src\Http\Requests\EventsRequest;
 use App\Domains\Poidu\App\src\Http\Resources\EventResource;
 use App\Domains\Poidu\App\src\Models\Event;
+use App\Domains\Poidu\App\src\Repositories\EventRepository;
 use App\Domains\Poidu\Pipeline\src\Models\EventMining;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+
+    public function __construct(
+        private EventRepository $eventRepository,
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index(EventsRequest $request)
     {
-        $events = EventMining::query()
-            ->when($request->column, function ($q, $column) use ($request) {
-                $q->whereHas($column, function ($q) use ($request) {
-                    $q->where('id', $request->value);
-                });
-            })
-            ->when($request->search, function ($q, $search) use ($request) {
-                $q->where('title', 'like', "%$search%");
-            })
-            ->when($request->sort, function ($q, $sort) use ($request) {
-                $q->when($request->direction, function ($q, $direction) use ($request, $sort) {
-                    switch ($direction) {
-                        case 'asc':
-                            $q->orderBy($sort);
-                            break;
-                        case 'desc':
-                            $q->orderByDesc($sort);
-                            break;
-                    }
-                });
-            })
-            ->where('date_time', '>', now('Asia/Krasnoyarsk')->subDays(config('services.poidu.past_days')))
-            ->where('approved', 1)
-            ->orderBy('date_time')
-            ->get();
-
-        // dd($events);
-
-
-
-        return EventResource::collection($events);
+        return $this->eventRepository->getEvents($request);
     }
 
     /**
@@ -71,9 +47,7 @@ class EventController extends Controller
      */
     public function show(EventRequest $request)
     {
-        $event = EventMining::find($request->id);
-
-        return new EventResource($event);
+        return $this->eventRepository->getEvent($request);
     }
 
     /**

@@ -78,3 +78,9 @@ pbu:
 # создание изображения
 pi:
 	sudo docker compose exec app php artisan pipeline:imagenize $(pid)
+
+# -------+
+# Deploy |
+# -------+
+publish:
+	sudo docker compose exec app php artisan vendor:publish --tag=volt --force
