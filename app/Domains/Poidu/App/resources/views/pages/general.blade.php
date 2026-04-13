@@ -2,19 +2,20 @@
 
 @extends('poidu::layouts.app')
 
-@section('title', $seo->title)
-
 @section('content')
-<!-- Search -->
-@include('poidu::includes.search')
-<!-- End Search -->
+    <!-- Head -->
+    @include('poidu::includes.head')
+    <!-- End Head -->
 
-<!-- Category -->
-@include('poidu::includes.categories')
-<!-- End Category -->
+    <!-- Search -->
+    @include('poidu::includes.search')
+    <!-- End Search -->
 
-<!-- Events -->
-@include('poidu::includes.events')
+    <!-- Category -->
+    @include('poidu::includes.categories')
+    <!-- End Category -->
 
-<!-- End Events -->
+    <!-- Events -->
+    @include('poidu::includes.events')
+    <!-- End Events -->
 @endsection

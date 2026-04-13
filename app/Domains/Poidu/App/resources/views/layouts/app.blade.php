@@ -50,7 +50,6 @@
 
     <main class="content ms-0 px-0 d-flex flex-column min-vh-100">
         @include('poidu::includes.navbar')
-        @include('poidu::includes.head')
 
         @yield('content')
 
