@@ -14,21 +14,22 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $catrgories = [
-            'Походы',
-            'Сплавы',
-            'Экскурсии',
-            'Туры',
-            'C детьми',
-            'Эти выходные',
-            'Спелео',
-            'Восхождения',
-            'Соревнования',
-            'Фото'
+            'hiking' => 'Походы',
+            'water' => 'Сплавы',
+            'excursion' => 'Экскурсии',
+            'tours' => 'Туры',
+            'child' => 'C детьми',
+            'weekend' => 'Эти выходные',
+            'speleo' => 'Спелео',
+            'mountains' => 'Восхождения',
+            'tournaments' => 'Соревнования',
+            'photo' => 'Фото'
         ];
 
-        foreach ($catrgories as $category) {
+        foreach ($catrgories as $key => $value) {
             DB::table('categories')->insert([
-                'category' => $category,
+                'alias' => $key,
+                'category' => $value,
             ]);
         }
     }
