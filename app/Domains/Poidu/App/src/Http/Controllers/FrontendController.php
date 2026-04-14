@@ -3,7 +3,7 @@
 namespace App\Domains\Poidu\App\src\Http\Controllers;
 
 use App\Domains\Poidu\App\src\Repositories\CategoryRepository;
-use App\Domains\Poidu\App\src\Repositories\EventRepository;
+use App\Domains\Poidu\App\src\Repositories\EventMiningRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -11,17 +11,21 @@ use Illuminate\Support\Facades\Http;
 class FrontendController extends Controller
 {
     public function __construct(
-        private EventRepository $eventRepository,
+        private EventMiningRepository $eventMiningRepository,
         private CategoryRepository $categoryRepository,
     ) {}
 
     public function general(Request $request)
     {
-        $events = $this->eventRepository->getEvents($request);
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
+
         $categories = $this->categoryRepository->getCategories($request);
+
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
+            'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Все туристические мероприятия красноярска',
@@ -32,10 +36,12 @@ class FrontendController extends Controller
 
     public function event(Request $request)
     {
-        $event = $this->eventRepository->getEvent($request);
+        $event = $this->eventMiningRepository->getEvent($request);
+        $count = $this->eventMiningRepository->getCount();
 
         return view('poidu::pages.event', [
             'event' => $event->resolve(),
+            'count' => $count,
             'seo' => [
                 'title' => $event->title,
                 'description' => $event->description,
@@ -51,11 +57,14 @@ class FrontendController extends Controller
         $request->merge(['column' => 'category']);
         $request->merge(['value' => 1]);
 
-        $events = $this->eventRepository->getEvents($request);
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
+
         $categories = $this->categoryRepository->getCategories($request);
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
+            'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Походы в красноярске',
@@ -68,11 +77,14 @@ class FrontendController extends Controller
         $request->merge(['column' => 'category']);
         $request->merge(['value' => 3]);
 
-        $events = $this->eventRepository->getEvents($request);
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
+
         $categories = $this->categoryRepository->getCategories($request);
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
+            'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Экскурсии в Красноярске',
@@ -85,11 +97,14 @@ class FrontendController extends Controller
         $request->merge(['column' => 'category']);
         $request->merge(['value' => 4]);
 
-        $events = $this->eventRepository->getEvents($request);
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
+
         $categories = $this->categoryRepository->getCategories($request);
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
+            'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Туристические туры по Красноярску и краю',
@@ -102,11 +117,14 @@ class FrontendController extends Controller
         $request->merge(['column' => 'category']);
         $request->merge(['value' => 8]);
 
-        $events = $this->eventRepository->getEvents($request);
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
+
         $categories = $this->categoryRepository->getCategories($request);
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
+            'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Восхождения на горы Красноярска и края',
@@ -119,11 +137,14 @@ class FrontendController extends Controller
         $request->merge(['column' => 'category']);
         $request->merge(['value' => 7]);
 
-        $events = $this->eventRepository->getEvents($request);
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
+
         $categories = $this->categoryRepository->getCategories($request);
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
+            'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Спуски в пещеры Красноярска и края',
@@ -131,19 +152,65 @@ class FrontendController extends Controller
             ],
         ]);
     }
+
     public function water(Request $request)
     {
         $request->merge(['column' => 'category']);
         $request->merge(['value' => 2]);
 
-        $events = $this->eventRepository->getEvents($request);
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
+
         $categories = $this->categoryRepository->getCategories($request);
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
+            'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Сплавы в красноярске',
+                'description' => 'В разработке'
+            ],
+        ]);
+    }
+
+    public function tournaments(Request $request)
+    {
+        $request->merge(['column' => 'category']);
+        $request->merge(['value' => 9]);
+
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
+
+        $categories = $this->categoryRepository->getCategories($request);
+
+        return view('poidu::pages.general', [
+            'events' => $events->resolve(),
+            'count' => $count,
+            'categories' => $categories->resolve(),
+            'seo' => [
+                'title' => 'Соревнования в красноярске',
+                'description' => 'В разработке'
+            ],
+        ]);
+    }
+
+    public function photo(Request $request)
+    {
+        $request->merge(['column' => 'category']);
+        $request->merge(['value' => 10]);
+
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
+
+        $categories = $this->categoryRepository->getCategories($request);
+
+        return view('poidu::pages.general', [
+            'events' => $events->resolve(),
+            'count' => $count,
+            'categories' => $categories->resolve(),
+            'seo' => [
+                'title' => 'Туризм с упором на фотографию в Красноярске',
                 'description' => 'В разработке'
             ],
         ]);

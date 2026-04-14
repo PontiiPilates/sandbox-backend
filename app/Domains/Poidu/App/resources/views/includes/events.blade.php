@@ -1,4 +1,4 @@
-<div class="cnt py-4">
+<div class="cnt py-4 flex-grow-1">
     <div class="row g-3">
         <!-- Event Card -->
         @foreach($events as $event)

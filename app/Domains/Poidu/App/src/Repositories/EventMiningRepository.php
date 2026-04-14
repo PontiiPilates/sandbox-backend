@@ -2,11 +2,11 @@
 
 namespace App\Domains\Poidu\App\src\Repositories;
 
-use App\Domains\Poidu\App\src\Http\Resources\EventResource;
+use App\Domains\Poidu\App\src\Http\Resources\EventMiningResource;
 use App\Domains\Poidu\Pipeline\src\Models\EventMining;
 use Illuminate\Http\Request;
 
-final class EventRepository
+final class EventMiningRepository
 {
     public function getEvents(Request $request)
     {
@@ -36,13 +36,23 @@ final class EventRepository
             ->orderBy('date_time')
             ->get();
 
-        return EventResource::collection($events);
+        return EventMiningResource::collection($events);
     }
 
     public function getEvent(Request $request)
     {
         $event = EventMining::find($request->id);
 
-        return new EventResource($event);
+        return new EventMiningResource($event);
+    }
+
+    /**
+     * Возвращает количество предстоящих мероприятий
+     */
+    public function getCount(): int
+    {
+        return EventMining::where('date_time', '>', now('Asia/Krasnoyarsk')
+            ->subDays(config('services.poidu.past_days')))
+            ->count();
     }
 }

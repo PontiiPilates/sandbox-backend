@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->char('alias');
-            $table->char('category');
+            $table->char('name');
 
             $table->timestamps();
         });

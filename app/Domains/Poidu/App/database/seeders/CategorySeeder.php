@@ -16,7 +16,7 @@ class CategorySeeder extends Seeder
         $catrgories = [
             'hiking' => 'Походы',
             'water' => 'Сплавы',
-            'excursion' => 'Экскурсии',
+            'excursions' => 'Экскурсии',
             'tours' => 'Туры',
             'child' => 'C детьми',
             'weekend' => 'Эти выходные',
@@ -29,7 +29,7 @@ class CategorySeeder extends Seeder
         foreach ($catrgories as $key => $value) {
             DB::table('categories')->insert([
                 'alias' => $key,
-                'category' => $value,
+                'name' => $value,
             ]);
         }
     }

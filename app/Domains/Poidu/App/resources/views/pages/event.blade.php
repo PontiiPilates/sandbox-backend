@@ -8,9 +8,11 @@
     @include('poidu::includes.head')
     <!-- End Head -->
 
-    <div class="cnt mb-4">
+    <!-- Full content -->
+    <div class="cnt mb-4 flex-grow-1">
         <!-- todo попробовать вывести исходное описание -->
         <a href="{{ $event->link_to_post }}" class="btn btn-outline-primary w-100" type="button" target="_blank">Перейти в источник</a>
     </div>
+    <!-- End Full content -->
 
 @endsection
