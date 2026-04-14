@@ -1,5 +1,6 @@
 <!-- Head -->
 <div class="cnt d-block my-4">
+
     <!-- Breadcrumbs -->
     <nav aria-label="breadcrumb" class="cnt p-0 d-none d-md-inline-block">
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -10,8 +11,18 @@
                     </svg>
                 </a>
             </li>
-            <li class="breadcrumb-item active"><a href="{{ route('general') }}">Вы дома</a></li>
-            <!-- <li class="breadcrumb-item active" aria-current="page">Pricing</li> -->
+
+            @if(request()->path() == '/')
+                <li class="breadcrumb-item active" aria-current="page">Вы дома</li>
+            @endif
+
+            @foreach($categories as $category)
+                @php $category = (object) $category; @endphp
+                    @if(request()->path() == $category->alias)
+                    <li class="breadcrumb-item"><a href="{{ route('general') }}">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
+                @endif
+            @endforeach
         </ol>
     </nav>
     <!-- End Breadcrumbs -->
@@ -28,5 +39,6 @@
     <!-- Description -->
     <p class="mb-0">{{ $seo->description }}</p>
     <!-- End Description -->
+     
 </div>
 <!-- End Head -->
