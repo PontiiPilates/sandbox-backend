@@ -1,4 +1,26 @@
 <div class="cnt py-4 flex-grow-1">
+
+    <!-- Если запрос на поиск есть, а результата нет и категория не выбрана -->
+    @if( request()->has('search') && empty($events) && request()->path() == '/')
+    <p class="h4">По запросу «{{ request()->input('search') }}» ничего не нашлось</p>
+    @endif
+    <!-- Если запрос на поиск есть, а результата нет и категория не выбрана -->
+
+    <!-- Если запрос на поиск есть, а результата нет, но категория выбрана -->
+    @if( request()->has('search') && empty($events) && request()->path())
+
+    @foreach($categories as $category)
+        @php $category = (object) $category; @endphp
+        @if($category->alias == request()->path())
+            @php $category = $category->name; @endphp
+            @break
+        @endif
+    @endforeach
+
+    <p class="h4">По запросу «{{ request()->input('search') }}» в категории «{{ $category }}» ничего не нашлось</p>
+    @endif
+    <!-- Если запрос на поиск есть, а результата нет, но категория выбрана -->
+
     <div class="row g-3">
         <!-- Event Card -->
         @foreach($events as $event)

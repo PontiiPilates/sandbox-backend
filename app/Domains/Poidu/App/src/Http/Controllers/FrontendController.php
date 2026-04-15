@@ -22,7 +22,6 @@ class FrontendController extends Controller
 
         $categories = $this->categoryRepository->getCategories($request);
 
-
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
             'count' => $count,
@@ -49,9 +48,9 @@ class FrontendController extends Controller
         ]);
     }
 
-    // -----------------------+
-    // Для посадочных страниц |
-    // -----------------------+
+    // --------------------+
+    // Посадочные страницы |
+    // --------------------+
     public function hiking(Request $request)
     {
         $request->merge(['column' => 'category']);
