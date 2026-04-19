@@ -35,3 +35,4 @@ auth.json
 
 docker-compose.yml
 public/volt
+docker/nginx/conf.d/default.conf
