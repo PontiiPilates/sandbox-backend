@@ -21,6 +21,10 @@ services:
     volumes:
       - ./:/var/www/app
       - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      # добавление сертификатов
+      - /etc/ssl/poidu/poidu.org.crt:/etc/ssl/poidu.org.crt:ro
+      - /etc/ssl/poidu/poidu.org.key:/etc/ssl/poidu.org.key:ro
+      - /etc/ssl/poidu/ca.crt:/etc/ssl/ca.crt:ro
     depends_on:
       - app
 
