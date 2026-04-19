@@ -14,3 +14,6 @@ Route::get('/speleo', [FrontendController::class, 'speleo'])->name('speleo');
 Route::get('/water', [FrontendController::class, 'water'])->name('water');
 Route::get('/tournaments', [FrontendController::class, 'tournaments'])->name('tournaments');
 Route::get('/photo', [FrontendController::class, 'photo'])->name('photo');
+
+// todo переместить в административную часть приложения
+Route::match(['get', 'post'], '/auth', [FrontendController::class, 'auth'])->name('auth');

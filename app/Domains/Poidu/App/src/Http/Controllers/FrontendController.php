@@ -5,8 +5,11 @@ namespace App\Domains\Poidu\App\src\Http\Controllers;
 use App\Domains\Poidu\App\src\Repositories\CategoryRepository;
 use App\Domains\Poidu\App\src\Repositories\EventMiningRepository;
 use App\Http\Controllers\Controller;
+use danog\MadelineProto\API;
+use danog\MadelineProto\Settings\AppInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class FrontendController extends Controller
 {
@@ -213,5 +216,29 @@ class FrontendController extends Controller
                 'description' => 'В разработке'
             ],
         ]);
+    }
+
+    public function auth()
+    {
+        $apiId = config('services.parsing.tg.madeline_proto.api_id');
+        $apiHash = config('services.parsing.tg.madeline_proto.api_hash');
+
+        // если нет пути для хранения сессии - он будет создан
+        if (!Storage::directoryExists('parsing/telegram/madeline-proto/session')) {
+            Storage::makeDirectory('parsing/telegram/madeline-proto/session');
+        }
+
+        $settings = new AppInfo();
+        $settings->setApiId($apiId);
+        $settings->setApiHash($apiHash);
+
+        $madelineProto = new API(
+            storage_path('app/private/parsing/telegram/madeline-proto/session'),
+            $settings
+        );
+
+        $madelineProto->start();
+
+        dd($madelineProto->getSelf());
     }
 }
