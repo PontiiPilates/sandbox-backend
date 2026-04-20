@@ -222,20 +222,19 @@ class FrontendController extends Controller
     {
         $apiId = config('services.parsing.tg.madeline_proto.api_id');
         $apiHash = config('services.parsing.tg.madeline_proto.api_hash');
+        $pathToSessionCheck = config('services.parsing.tg.madeline_proto.path_to_session_check');
+        $pathToSession = config('services.parsing.tg.madeline_proto.path_to_session');
 
         // если нет пути для хранения сессии - он будет создан
-        if (!Storage::directoryExists('parsing/telegram/madeline-proto/session')) {
-            Storage::makeDirectory('parsing/telegram/madeline-proto/session');
+        if (!Storage::directoryExists($pathToSessionCheck)) {
+            Storage::makeDirectory($pathToSessionCheck);
         }
 
         $settings = new AppInfo();
         $settings->setApiId($apiId);
         $settings->setApiHash($apiHash);
 
-        $madelineProto = new API(
-            storage_path('app/private/parsing/telegram/madeline-proto/session'),
-            $settings
-        );
+        $madelineProto = new API($pathToSession, $settings);
 
         $madelineProto->start();
 
