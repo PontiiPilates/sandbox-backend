@@ -80,9 +80,9 @@ class ClassifyUpdateCommand extends Command
                 }
 
                 // получение категорий
-                $category = Category::where('category', $post->category)->first();
+                $category = Category::where('name', $post->category)->first();
                 $additionalCategory = Category::when($post->category, function ($q, $category) use ($post) {
-                    $q->where('category', $post->category)->first();
+                    $q->where('name', $post->category)->first();
                 });
 
                 // обновление полученной записи

@@ -4,19 +4,21 @@ namespace App\Domains\Poidu\App\src\Http\Controllers;
 
 use App\Domains\Poidu\App\src\Http\Resources\CategoryResource;
 use App\Domains\Poidu\App\src\Models\Category;
+use App\Domains\Poidu\App\src\Repositories\CategoryRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function __construct(
+        private CategoryRepository $categoryRepository,
+    ) {}
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::get();
-
-        return CategoryResource::collection($categories);
+        return $this->categoryRepository->getCategories($request);
     }
 
     /**

@@ -128,6 +128,7 @@ return [
         ],
 
         'pipeline' => [
+            'driver' => 'single',
             'path' => storage_path('logs/poidu/pipeline.log'),
         ],
 

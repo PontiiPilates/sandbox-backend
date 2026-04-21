@@ -32,3 +32,7 @@ auth.json
 /docker/mysql/data/*
 /docker/mysql/backups/*
 .vscode
+
+docker-compose.yml
+public/volt
+docker/nginx/conf.d/default.conf
