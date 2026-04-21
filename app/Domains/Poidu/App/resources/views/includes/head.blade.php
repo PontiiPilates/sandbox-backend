@@ -1,8 +1,8 @@
 <!-- Head -->
 <div class="cnt d-block my-4">
 
-    <!-- Breadcrumbs -->
-    <nav aria-label="breadcrumb" class="cnt p-0 d-none d-md-inline-block">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="cnt p-0 d-md-inline-block">
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
             <li class="breadcrumb-item">
                 <a href="{{ route('general') }}">
@@ -16,20 +16,34 @@
                 </a>
             </li>
 
+            <!-- For general -->
             @if(request()->path() == '/')
                 <li class="breadcrumb-item active" aria-current="page">Вы дома, вы на Poidu</li>
             @endif
+            <!-- End for general -->
 
-            @foreach($categories as $category)
-                @php $category = (object) $category; @endphp
-                    @if(request()->path() == $category->alias)
-                    <li class="breadcrumb-item"><a href="{{ route('general') }}">Poidu</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
-                @endif
-            @endforeach
+            <!-- For category -->
+            @if(isset($categories))
+                @foreach($categories as $category)
+                    @php $category = (object) $category; @endphp
+                        @if(request()->path() == $category->alias)
+                        <li class="breadcrumb-item"><a href="{{ route('general') }}">Poidu</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
+                    @endif
+                @endforeach
+            @endif
+            <!-- End for category -->
+
+            <!-- For event -->
+            @if(Str::startsWith(request()->path(), 'event'))
+                <li class="breadcrumb-item"><a href="{{ route('general') }}">Poidu</a></li>
+                <li class="breadcrumb-item"><a href="{{ route($event->category->alias) }}">{{ $event->category->name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $seo->title }}</li>
+            @endif
+            <!-- End for event -->
         </ol>
     </nav>
-    <!-- End Breadcrumbs -->
+    <!-- End Breadcrumb -->
 
     @if(isset($event->preview))
     <img src="{{ $event->preview }}" class="img-fluid mb-4" alt="...">
