@@ -4,8 +4,8 @@ namespace App\Domains\Poidu\Pipeline\src\Traits;
 
 trait PipelineLogger
 {
-    public function failed($model, $message)
+    public function failedClient($model)
     {
-        $model->update(['failed' => $message]);
+        $model->update(['failed' => 'Ошибка при создании клиента MadelineProto. Вероятно следует удалить сессию и авторизоваться вновь. Или выдать права на запись в лог.']);
     }
 }

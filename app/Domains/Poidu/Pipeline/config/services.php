@@ -9,6 +9,8 @@ return [
             'madeline_proto' => [
                 'api_id' => env('TG_API_ID'),
                 'api_hash' => env('TG_API_HASH'),
+
+                'path_to_session_check' => 'parsing/telegram/madeline-proto/session',
                 'path_to_session' => storage_path('app/private/parsing/telegram/madeline-proto/session'),
             ],
             'sources' => [

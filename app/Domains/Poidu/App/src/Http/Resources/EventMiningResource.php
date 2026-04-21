@@ -5,7 +5,7 @@ namespace App\Domains\Poidu\App\src\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class EventResource extends JsonResource
+class EventMiningResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,11 +14,6 @@ class EventResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // dd([
-        //     $this,
-        //     new CategoryResource($this->category),
-        // ]);
-
         return [
             "id" => $this->id,
             "category" => new CategoryResource($this->category),
@@ -35,6 +30,9 @@ class EventResource extends JsonResource
             "preview" => $this->preview
                 ? url('/storage/previews/' . $this->preview)
                 : url('/storage/previews/default/' . 'summer:camping:company:flame.jpg'),
+            "meta" => [
+                'count' => $this->count,
+            ]
         ];
     }
 }

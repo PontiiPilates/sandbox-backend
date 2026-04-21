@@ -8,6 +8,7 @@ use App\Domains\Poidu\Pipeline\src\Traits\PipelineLogger;
 use Carbon\Carbon;
 use danog\MadelineProto\API;
 use danog\MadelineProto\Settings\AppInfo;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -51,14 +52,18 @@ class ParsingTelegramCommand extends Command
     public function handle(): void
     {
         $this->prepare();
-        $this->createMtProtoClient();
+
+        try {
+            $this->createMtProtoClient();
+        } catch (\Throwable $th) {
+            $this->failedClient($this->pipeline);
+            return;
+        }
 
         dump("Начинается извлечение постов из Telegram");
-        Log::channel('pipeline')->info("Начинается извлечение постов из Telegram");
 
         foreach ($this->eventsChannels as $channel) {
             dump($channel);
-            $this->line($channel);
 
             sleep($this->pause);
 
@@ -71,7 +76,7 @@ class ParsingTelegramCommand extends Command
                 ]));
             } catch (\Throwable $th) {
                 dump("Возникла проблема при извлечении контента из канала {$channel}");
-                $this->warn("Возникла проблема при извлечении контента из канала {$channel}");
+                Log::channel('pipeline')->warning("Возникла проблема при извлечении контента из канала {$channel}", [$th->getMessage()]);
                 continue;
             }
 
@@ -79,7 +84,6 @@ class ParsingTelegramCommand extends Command
         }
 
         dump("Сохранено $this->saved из полученных $this->recived");
-        Log::channel('pipeline')->info("Сохранено $this->saved из полученных $this->recived");
 
         if ($this->argument('pipelineId')) {
             $this->pipeline->update(['1_parsing' => now()]);
@@ -107,6 +111,8 @@ class ParsingTelegramCommand extends Command
 
     private function createMtProtoClient(): void
     {
+        $pathToSession = config('services.parsing.tg.madeline_proto.path_to_session');
+
         // создание конфигурации
         $settings = new AppInfo();
         $settings->setApiId(config('services.parsing.tg.madeline_proto.api_id'));
@@ -114,18 +120,16 @@ class ParsingTelegramCommand extends Command
 
         // генерация клиента
         try {
-            $this->madelineProto = new API(config('services.parsing.tg.madeline_proto.path_to_session'), $settings);
+            $this->madelineProto = new API($pathToSession, $settings);
         } catch (\Throwable $th) {
-            $this->failed($this->pipeline, 'Ошибка при создании клиента MadelineProto. Вероятно следует удалить сессию и авторизоваться вновь. Или выдать права на запись в лог.' . __LINE__);
-            return;
+            throw new Exception($th);
         }
 
         // установка соединения
         try {
             $this->madelineProto->start();
         } catch (\Throwable $th) {
-            $this->failed($this->pipeline, 'Ошибка при создании клиента MadelineProto. Вероятно следует удалить сессию и авторизоваться вновь. Или выдать права на запись в лог.' . __LINE__);
-            return;
+            throw new Exception($th);
         }
     }
 

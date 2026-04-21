@@ -10,26 +10,40 @@ services:
       - "host.docker.internal:host-gateway" # Для доступа к MySQL на хосте
     volumes:
       - ./:/var/www/app
+      - vendor_volume:/var/www/app/vendor
 
   nginx:
     image: nginx:stable-alpine
     ports:
-      - 88:80
+      - 80:80
+      - 443:443
     networks:
       - app-network
     volumes:
       - ./:/var/www/app
       - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      # добавление сертификатов
+      - /etc/ssl/poidu/poidu.org.crt:/etc/ssl/poidu.org.crt:ro
+      - /etc/ssl/poidu/poidu.org.key:/etc/ssl/poidu.org.key:ro
+      - /etc/ssl/poidu/ca.crt:/etc/ssl/ca.crt:ro
     depends_on:
       - app
 
   adminer:
     image: adminer:latest
-    network_mode: host # Оставляем для простоты
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      - DB_HOST=127.0.0.1
-      - DB_PORT=3306
+      - ADMINER_DEFAULT_SERVER=host.docker.internal
+    restart: unless-stopped
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  vendor_volume:

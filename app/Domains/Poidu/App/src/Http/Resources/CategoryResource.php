@@ -16,8 +16,12 @@ class CategoryResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "name" => $this->category,
-            "count" => $this->eventsMining->count(),
+            "name" => $this->name,
+            "alias" => $this->alias,
+            "count" => $this->eventsMining
+                ->where('date_time', '>', now('Asia/Krasnoyarsk')
+                ->subDays(config('services.poidu.past_days')))
+                ->count(),
         ];
     }
 }
