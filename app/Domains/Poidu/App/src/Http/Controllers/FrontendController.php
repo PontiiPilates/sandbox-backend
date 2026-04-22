@@ -30,7 +30,7 @@ class FrontendController extends Controller
             'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
-                'title' => 'Все туристические мероприятия красноярска',
+                'title' => 'Все туристические мероприятия Красноярска',
                 'description' => 'Откройте для себя эпические приключения в горах, реках, лесах и за их пределами. Общайтесь с природой и единомышленниками.'
             ],
         ]);
@@ -69,8 +69,8 @@ class FrontendController extends Controller
             'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
-                'title' => 'Походы в красноярске',
-                'description' => 'В разработке'
+                'title' => 'Пешие походы в Красноярске',
+                'description' => 'Походы выходного дня, однодневные и многодневные маршруты в Красноярске и окресностях. Выбирайте поход под свой уровень подготовки.'
             ],
         ]);
     }
@@ -90,7 +90,7 @@ class FrontendController extends Controller
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Экскурсии в Красноярске',
-                'description' => 'В разработке'
+                'description' => 'Обзорные, исторические и природные экскурсии по Красноярску и краю. Готовые маршруты с гидами. От центра города до заповедников.'
             ],
         ]);
     }
@@ -110,7 +110,7 @@ class FrontendController extends Controller
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Туристические туры по Красноярску и краю',
-                'description' => 'В разработке'
+                'description' => 'От выходного дня до недельных экспедиций. Пакетные путешествия с проживанием и трансфером. Идеи для отдыха на любой сезон.'
             ],
         ]);
     }
@@ -130,7 +130,7 @@ class FrontendController extends Controller
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Восхождения на горы Красноярска и края',
-                'description' => 'В разработке'
+                'description' => 'От подъёма на видовки Николаевской сопки до покорения Боруса и Аргыджэка. Выбирайте сложность — от треккинга до технического подъёма.'
             ],
         ]);
     }
@@ -150,7 +150,7 @@ class FrontendController extends Controller
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Спуски в пещеры Красноярска и края',
-                'description' => 'В разработке'
+                'description' => 'Большая Орешная, Баджейская, Кубинская. Карточки спелеотуров для новичков и опытных групп.'
             ],
         ]);
     }
@@ -170,8 +170,8 @@ class FrontendController extends Controller
             'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
-                'title' => 'Сплавы в красноярске',
-                'description' => 'В разработке'
+                'title' => 'Сплавы по рекам Красноярска и края',
+                'description' => 'Мана, Енисей, Катунь (выездные), рафт-туры на катамаранах и байдарках. Уровень сложности — от семейного до экстремального.'
             ],
         ]);
     }
@@ -191,8 +191,8 @@ class FrontendController extends Controller
             'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
-                'title' => 'Соревнования в красноярске',
-                'description' => 'В разработке'
+                'title' => 'Соревнования в Красноярске',
+                'description' => 'Спортивный туризм, ориентирование, техника пешеходного туризма, скалолазание, Скандинавская хотьба.'
             ],
         ]);
     }
@@ -213,7 +213,7 @@ class FrontendController extends Controller
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Туризм с упором на фотографию в Красноярске',
-                'description' => 'В разработке'
+                'description' => 'Рассветы на Столбах, съёмка пещер и сплавов. С собой — любая камера.'
             ],
         ]);
     }
