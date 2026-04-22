@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 final class CategoryRepository
 {
-    public function getCategories(Request $request)
+    public function getCategories()
     {
         $categories = Category::get();
 

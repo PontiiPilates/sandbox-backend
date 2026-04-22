@@ -23,7 +23,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -62,7 +62,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -82,7 +82,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -102,7 +102,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -122,7 +122,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -142,7 +142,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -163,7 +163,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -184,7 +184,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -205,7 +205,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
