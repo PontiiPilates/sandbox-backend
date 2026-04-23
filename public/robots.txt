@@ -1,4 +1,5 @@
 User-agent: *
+Allow: /
 Disallow: /shrimp/
-Disallow: /search?
 Sitemap: https://poidu.org/storage/sitemap.xml
+Clean-param: search
