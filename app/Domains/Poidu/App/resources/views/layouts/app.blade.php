@@ -11,7 +11,7 @@
     <meta name="author" content="Poidu">
     <meta name="description" content="">
     <meta name="keywords" content="" />
-    <link rel="canonical" href="#">
+    <link rel="canonical" href="{{ request()->url() }}"/>
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('volt/assets/img/favicon/apple-touch-icon.png') }}">

@@ -7,7 +7,7 @@
     <!-- Если запрос на поиск есть, а результата нет и категория не выбрана -->
 
     <!-- Если запрос на поиск есть, а результата нет, но категория выбрана -->
-    @if( request()->has('search') && empty($events) && request()->path())
+    @if( request()->has('search') && empty($events) && request()->path() != '/' )
 
     @foreach($categories as $category)
         @php $category = (object) $category; @endphp

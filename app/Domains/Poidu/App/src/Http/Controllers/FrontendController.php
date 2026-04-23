@@ -218,7 +218,7 @@ class FrontendController extends Controller
         ]);
     }
 
-    public function auth()
+    public function tgAuth()
     {
         $apiId = config('services.parsing.tg.madeline_proto.api_id');
         $apiHash = config('services.parsing.tg.madeline_proto.api_hash');
