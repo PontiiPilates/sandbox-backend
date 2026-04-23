@@ -9,12 +9,12 @@
                 <li class="list-inline-item px-0 px-sm-2">
                     <a href="{{ route('general') }}">Главная</a>
                 </li>
-                <li class="list-inline-item px-0 px-sm-2">
+                <!-- <li class="list-inline-item px-0 px-sm-2">
                     <a href="#">О проекте</a>
-                </li>
-                <li class="list-inline-item px-0 px-sm-2">
+                </li> -->
+                <!-- <li class="list-inline-item px-0 px-sm-2">
                     <a href="#">Контакты</a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

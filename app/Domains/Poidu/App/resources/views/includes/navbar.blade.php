@@ -9,12 +9,12 @@
             <li class="nav-item">
                 <a href="{{ route('general') }}" class="nav-link">Главная</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="#" class="nav-link">О проекте</a>
-            </li>
-            <li class="nav-item">
+            </li> -->
+            <!-- <li class="nav-item">
                 <a href="#" class="nav-link">Контакты</a>
-            </li>
+            </li> -->
         </ul>
     </div>
 </nav>
@@ -63,18 +63,18 @@
                                         <span class="sidebar-text">Главная</span>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <span>
                                             <span class="sidebar-text">О проекте</span>
                                         </span>
                                     </a>
-                                </li>
-                                <li class="nav-item ">
+                                </li> -->
+                                <!-- <li class="nav-item ">
                                     <a href="#" class="nav-link">
                                         <span class="sidebar-text">Контакты</span>
                                     </a>
-                                </li>
+                                </li> -->
                                 <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
                             </ul>
                         </div>
