@@ -20,7 +20,7 @@ class EventMiningResource extends JsonResource
             "title" => $this->title,
             "description" => $this->description,
             "date_start" => $this->date_start,
-            "time_start" => $this->time_start == '00:00' ? 'Уточняйте у организатора' : $this->time_start,
+            "time_start" => $this->time_start,
             "price_min" => $this->price_min,
             "price_max" => $this->price_max,
             "link_to_post" => "https://{$this->peer}/{$this->post_id}",
