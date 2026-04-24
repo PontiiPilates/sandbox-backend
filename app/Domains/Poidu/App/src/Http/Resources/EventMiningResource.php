@@ -30,9 +30,12 @@ class EventMiningResource extends JsonResource
             "preview" => $this->preview
                 ? url('/storage/previews/' . $this->preview)
                 : url('/storage/previews/default/' . 'summer:camping:company:flame.jpg'),
-            "meta" => [
-                'count' => $this->count,
-            ]
+            'added_at' => $this->updated_at,
+
+            // если ошибок не будет, то можно удалить
+            // "meta" => [
+            //     'count' => $this->count,
+            // ]
         ];
     }
 }

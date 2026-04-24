@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Poidu\App\src\Http\Controllers\AdminController;
 use App\Domains\Poidu\App\src\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,14 @@ Route::get('/tournaments', [FrontendController::class, 'tournaments'])->name('to
 Route::get('/photo', [FrontendController::class, 'photo'])->name('photo');
 
 // todo: с появлением авторизации исправить на административную группу
-Route::prefix('shrimp/li/piblz')->name('shrimplipiblz.')->group(function () {
-    Route::match(['get', 'post'], '/tg-auth', [FrontendController::class, 'tgAuth'])->name('tgAuth');
+Route::prefix('shrimp/li/piblz/admin')->name('shrimplipiblz.admin.')->group(function () {
+    Route::match(['get', 'post'], '/tg-auth', [AdminController::class, 'tgAuth'])->name('tgAuth');
+
+    Route::get('/published', [AdminController::class, 'published'])->name('published');
+    Route::get('/event/{id}/public', [AdminController::class, 'public'])->name('public');
+    Route::get('/event/{id}/unpublic', [AdminController::class, 'unPublic'])->name('unPublic');
+
+    // Route::match(['get', 'post'], '/published', [AdminController::class, 'published'])->name('published');
+    // Route::match(['get', 'post'], '/event/{id}/public', [AdminController::class, 'public'])->name('admin.public');
+    // Route::match(['get', 'post'], '/event/{id}/unpublic', [AdminController::class, 'unPublic'])->name('admin.unPublic');
 });
