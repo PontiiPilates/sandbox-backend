@@ -23,8 +23,4 @@ Route::prefix('shrimp/li/piblz/admin')->name('shrimplipiblz.admin.')->group(func
     Route::get('/published', [AdminController::class, 'published'])->name('published');
     Route::get('/event/{id}/public', [AdminController::class, 'public'])->name('public');
     Route::get('/event/{id}/unpublic', [AdminController::class, 'unPublic'])->name('unPublic');
-
-    // Route::match(['get', 'post'], '/published', [AdminController::class, 'published'])->name('published');
-    // Route::match(['get', 'post'], '/event/{id}/public', [AdminController::class, 'public'])->name('admin.public');
-    // Route::match(['get', 'post'], '/event/{id}/unpublic', [AdminController::class, 'unPublic'])->name('admin.unPublic');
 });
