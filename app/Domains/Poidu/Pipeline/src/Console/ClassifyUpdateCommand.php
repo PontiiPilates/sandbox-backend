@@ -74,6 +74,7 @@ class ClassifyUpdateCommand extends Command
                     ['source_file', '=', null],
                 ])->first();
 
+
                 // если запись не найдена, то переход к следующей итерации
                 if (!$eventMining) {
                     return;
@@ -81,8 +82,14 @@ class ClassifyUpdateCommand extends Command
 
                 // получение категорий
                 $category = Category::where('name', $post->category)->first();
-                $additionalCategory = Category::when($post->category, function ($q, $category) use ($post) {
-                    $q->where('name', $post->category)->first();
+
+                // если категория не найдена, то переход к следующей итерации
+                if (!$category) {
+                    return;
+                }
+
+                $additionalCategory = Category::when($post->additional_category, function ($q, $category) {
+                    $q->where('name', $category)->first();
                 });
 
                 // обновление полученной записи

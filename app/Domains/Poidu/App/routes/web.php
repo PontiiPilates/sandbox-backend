@@ -15,6 +15,7 @@ Route::get('/speleo', [FrontendController::class, 'speleo'])->name('speleo');
 Route::get('/water', [FrontendController::class, 'water'])->name('water');
 Route::get('/tournaments', [FrontendController::class, 'tournaments'])->name('tournaments');
 Route::get('/photo', [FrontendController::class, 'photo'])->name('photo');
+Route::get('/child', [FrontendController::class, 'child'])->name('child');
 
 // todo: с появлением авторизации исправить на административную группу
 Route::prefix('shrimp/li/piblz/admin')->name('shrimplipiblz.admin.')->group(function () {

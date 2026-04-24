@@ -213,4 +213,25 @@ class FrontendController extends Controller
             ],
         ]);
     }
+
+    public function child(Request $request)
+    {
+        $request->merge(['column' => 'category']);
+        $request->merge(['value' => 5]);
+
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
+
+        $categories = $this->categoryRepository->getCategories();
+
+        return view('poidu::pages.general', [
+            'events' => $events->resolve(),
+            'count' => $count,
+            'categories' => $categories->resolve(),
+            'seo' => [
+                'title' => 'Куда сходить с детьми в Красноярске',
+                'description' => 'На эти мероприятия можно брать с собой детей.'
+            ],
+        ]);
+    }
 }
