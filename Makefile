@@ -84,3 +84,10 @@ pi:
 # -------+
 publish:
 	sudo docker compose exec app php artisan vendor:publish --tag=volt --force
+
+
+# --------+
+# Service |
+# --------+
+rs:
+	sudo docker compose exec app php artisan poidu:refresh-sitemap
