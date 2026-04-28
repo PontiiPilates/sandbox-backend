@@ -16,3 +16,8 @@ Schedule::command('poidu:add-fake-view')
 Schedule::command('poidu:add-fake-view')
     ->timezone('Asia/Krasnoyarsk')
     ->cron('0 19-21 * * *');
+
+// каждый день в полночь по Красноярску
+Schedule::command('poidu:refresh-sitemap')
+    ->timezone('Asia/Krasnoyarsk')
+    ->daily();

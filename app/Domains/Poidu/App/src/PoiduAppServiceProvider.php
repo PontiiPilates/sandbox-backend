@@ -3,6 +3,7 @@
 namespace App\Domains\Poidu\App\src;
 
 use App\Domains\Poidu\App\src\Console\AddFakeViewCommand;
+use App\Domains\Poidu\App\src\Console\RefreshSitemapCommand;
 use Illuminate\Support\ServiceProvider;
 
 class PoiduAppServiceProvider extends ServiceProvider
@@ -14,6 +15,7 @@ class PoiduAppServiceProvider extends ServiceProvider
     {
         $this->commands([
             AddFakeViewCommand::class,
+            RefreshSitemapCommand::class,
         ]);
     }
 

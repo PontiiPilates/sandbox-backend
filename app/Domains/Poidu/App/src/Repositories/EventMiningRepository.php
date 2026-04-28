@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 final class EventMiningRepository
 {
-    public function getEvents(Request $request)
+    public function getEvents(Request $request = new Request())
     {
         $events = EventMining::query()
             ->when($request->column, function ($q, $column) use ($request) {

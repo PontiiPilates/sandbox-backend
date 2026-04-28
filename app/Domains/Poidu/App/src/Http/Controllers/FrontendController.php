@@ -5,11 +5,7 @@ namespace App\Domains\Poidu\App\src\Http\Controllers;
 use App\Domains\Poidu\App\src\Repositories\CategoryRepository;
 use App\Domains\Poidu\App\src\Repositories\EventMiningRepository;
 use App\Http\Controllers\Controller;
-use danog\MadelineProto\API;
-use danog\MadelineProto\Settings\AppInfo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 
 class FrontendController extends Controller
 {
@@ -23,14 +19,14 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
-                'title' => 'Все туристические мероприятия красноярска',
+                'title' => 'Все туристические мероприятия Красноярска',
                 'description' => 'Откройте для себя эпические приключения в горах, реках, лесах и за их пределами. Общайтесь с природой и единомышленниками.'
             ],
         ]);
@@ -62,15 +58,15 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
-                'title' => 'Походы в красноярске',
-                'description' => 'В разработке'
+                'title' => 'Пешие походы в Красноярске',
+                'description' => 'Походы выходного дня, однодневные и многодневные маршруты в Красноярске и окресностях по будням и выходным. Выбирайте поход под свой уровень подготовки.'
             ],
         ]);
     }
@@ -82,7 +78,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -90,7 +86,7 @@ class FrontendController extends Controller
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Экскурсии в Красноярске',
-                'description' => 'В разработке'
+                'description' => 'Обзорные, исторические и природные экскурсии по Красноярску и краю. Готовые маршруты с гидами. От центра города до заповедников.'
             ],
         ]);
     }
@@ -102,7 +98,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -110,7 +106,7 @@ class FrontendController extends Controller
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Туристические туры по Красноярску и краю',
-                'description' => 'В разработке'
+                'description' => 'От выходного дня до недельных экспедиций. Пакетные путешествия с проживанием и трансфером. Идеи для отдыха на любой сезон.'
             ],
         ]);
     }
@@ -122,7 +118,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -130,7 +126,7 @@ class FrontendController extends Controller
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Восхождения на горы Красноярска и края',
-                'description' => 'В разработке'
+                'description' => 'От подъёма на видовки Николаевской сопки до покорения Боруса и Аргыджэка. Выбирайте сложность — от треккинга до технического подъёма.'
             ],
         ]);
     }
@@ -142,7 +138,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -150,7 +146,7 @@ class FrontendController extends Controller
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Спуски в пещеры Красноярска и края',
-                'description' => 'В разработке'
+                'description' => 'Большая Орешная, Баджейская, Кубинская. Карточки спелеотуров для новичков и опытных групп.'
             ],
         ]);
     }
@@ -163,15 +159,15 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
-                'title' => 'Сплавы в красноярске',
-                'description' => 'В разработке'
+                'title' => 'Сплавы по рекам Красноярска и края',
+                'description' => 'Мана, Енисей, Катунь (выездные), рафт-туры на катамаранах и байдарках. Уровень сложности — от семейного до экстремального.'
             ],
         ]);
     }
@@ -184,15 +180,15 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
-                'title' => 'Соревнования в красноярске',
-                'description' => 'В разработке'
+                'title' => 'Соревнования в Красноярске',
+                'description' => 'Спортивный туризм, ориентирование, техника пешеходного туризма, скалолазание, Скандинавская хотьба.'
             ],
         ]);
     }
@@ -205,7 +201,7 @@ class FrontendController extends Controller
         $events = $this->eventMiningRepository->getEvents($request);
         $count = $this->eventMiningRepository->getCount();
 
-        $categories = $this->categoryRepository->getCategories($request);
+        $categories = $this->categoryRepository->getCategories();
 
         return view('poidu::pages.general', [
             'events' => $events->resolve(),
@@ -213,31 +209,29 @@ class FrontendController extends Controller
             'categories' => $categories->resolve(),
             'seo' => [
                 'title' => 'Туризм с упором на фотографию в Красноярске',
-                'description' => 'В разработке'
+                'description' => 'Рассветы на Столбах, съёмка пещер и сплавов. С собой — любая камера.'
             ],
         ]);
     }
 
-    public function auth()
+    public function child(Request $request)
     {
-        $apiId = config('services.parsing.tg.madeline_proto.api_id');
-        $apiHash = config('services.parsing.tg.madeline_proto.api_hash');
-        $pathToSessionCheck = config('services.parsing.tg.madeline_proto.path_to_session_check');
-        $pathToSession = config('services.parsing.tg.madeline_proto.path_to_session');
+        $request->merge(['column' => 'category']);
+        $request->merge(['value' => 5]);
 
-        // если нет пути для хранения сессии - он будет создан
-        if (!Storage::directoryExists($pathToSessionCheck)) {
-            Storage::makeDirectory($pathToSessionCheck);
-        }
+        $events = $this->eventMiningRepository->getEvents($request);
+        $count = $this->eventMiningRepository->getCount();
 
-        $settings = new AppInfo();
-        $settings->setApiId($apiId);
-        $settings->setApiHash($apiHash);
+        $categories = $this->categoryRepository->getCategories();
 
-        $madelineProto = new API($pathToSession, $settings);
-
-        $madelineProto->start();
-
-        dd($madelineProto->getSelf());
+        return view('poidu::pages.general', [
+            'events' => $events->resolve(),
+            'count' => $count,
+            'categories' => $categories->resolve(),
+            'seo' => [
+                'title' => 'Куда сходить с детьми в Красноярске',
+                'description' => 'На эти мероприятия можно брать с собой детей.'
+            ],
+        ]);
     }
 }
