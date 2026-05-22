@@ -2,7 +2,8 @@
 
 @extends('poidu::layouts.app')
 
-@section('title', 'Poidu | ' . $seo->title)
+@section('title', $seo->title)
+@section('description', $seo->description)
 
 @section('content')
     <!-- Head -->

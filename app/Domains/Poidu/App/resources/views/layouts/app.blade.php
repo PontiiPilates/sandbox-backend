@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="title" content="@yield('title')">
     <meta name="author" content="Poidu">
-    <meta name="description" content="">
+    <meta name="description" content="@yield('description')">
     <meta name="keywords" content="" />
     <link rel="canonical" href="{{ request()->url() }}" />
 
