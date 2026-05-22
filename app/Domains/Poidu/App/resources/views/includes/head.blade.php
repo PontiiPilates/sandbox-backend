@@ -50,7 +50,7 @@
     @endif
 
     <!-- Title -->
-    <h1 class="h3">{{ $seo->title }}</h1>
+    <h1 class="h3">{{ $seo->h1 ?? $seo->title}}</h1>
     <!-- End Title -->
 
     <!-- Description -->

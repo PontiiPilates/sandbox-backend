@@ -5,14 +5,22 @@ namespace App\Domains\Poidu\App\src\Http\Controllers;
 use App\Domains\Poidu\App\src\Repositories\CategoryRepository;
 use App\Domains\Poidu\App\src\Repositories\EventMiningRepository;
 use App\Http\Controllers\Controller;
+use App\Traits\TransformTrait;
 use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
+    use TransformTrait;
+
+    private object $seo;
+
     public function __construct(
         private EventMiningRepository $eventMiningRepository,
         private CategoryRepository $categoryRepository,
-    ) {}
+    ) {
+        require_once('../storage/app/private/poidu/seo/metatags.php');
+        $this->seo = $this->arrayToObject($seo);
+    }
 
     public function general(Request $request)
     {
@@ -25,10 +33,7 @@ class FrontendController extends Controller
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
-            'seo' => [
-                'title' => 'Все туристические мероприятия Красноярска',
-                'description' => 'Откройте для себя эпические приключения в горах, реках, лесах и за их пределами. Общайтесь с природой и единомышленниками.'
-            ],
+            'seo' => $this->seo->general
         ]);
     }
 
@@ -64,10 +69,7 @@ class FrontendController extends Controller
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
-            'seo' => [
-                'title' => 'Пешие походы в Красноярске',
-                'description' => 'Походы выходного дня, однодневные и многодневные маршруты в Красноярске и окресностях по будням и выходным. Выбирайте поход под свой уровень подготовки.'
-            ],
+            'seo' => $this->seo->hiking,
         ]);
     }
     public function excursions(Request $request)
@@ -84,10 +86,7 @@ class FrontendController extends Controller
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
-            'seo' => [
-                'title' => 'Групповые экскурсии в Красноярске',
-                'description' => 'Обзорные, исторические и природные экскурсии по Красноярску и краю. Готовые маршруты с гидами. От центра города до заповедников.'
-            ],
+            'seo' => $this->seo->excursions,
         ]);
     }
     public function tours(Request $request)
@@ -104,10 +103,7 @@ class FrontendController extends Controller
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
-            'seo' => [
-                'title' => 'Туристические туры по Красноярску и краю',
-                'description' => 'От выходного дня до недельных экспедиций. Пакетные путешествия с проживанием и трансфером. Идеи для отдыха на любой сезон.'
-            ],
+            'seo' => $this->seo->tours,
         ]);
     }
     public function mountains(Request $request)
@@ -124,10 +120,7 @@ class FrontendController extends Controller
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
-            'seo' => [
-                'title' => 'Восхождения на горы Красноярска и края',
-                'description' => 'От подъёма на видовки Николаевской сопки до покорения Боруса и Аргыджэка. Выбирайте сложность — от треккинга до технического подъёма.'
-            ],
+            'seo' => $this->seo->mountains,
         ]);
     }
     public function speleo(Request $request)
@@ -144,10 +137,7 @@ class FrontendController extends Controller
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
-            'seo' => [
-                'title' => 'Спуски в пещеры Красноярска и края',
-                'description' => 'Большая Орешная, Баджейская, Кубинская. Карточки спелеотуров для новичков и опытных групп.'
-            ],
+            'seo' => $this->seo->speleo,
         ]);
     }
 
@@ -165,10 +155,7 @@ class FrontendController extends Controller
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
-            'seo' => [
-                'title' => 'Сплавы по рекам Красноярска и края',
-                'description' => 'Мана, Енисей, Катунь (выездные), рафт-туры на катамаранах и байдарках. Уровень сложности — от семейного до экстремального.'
-            ],
+            'seo' => $this->seo->water,
         ]);
     }
 
@@ -186,10 +173,7 @@ class FrontendController extends Controller
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
-            'seo' => [
-                'title' => 'Соревнования в Красноярске',
-                'description' => 'Спортивный туризм, ориентирование, техника пешеходного туризма, скалолазание, Скандинавская хотьба.'
-            ],
+            'seo' => $this->seo->tournaments,
         ]);
     }
 
@@ -207,10 +191,7 @@ class FrontendController extends Controller
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
-            'seo' => [
-                'title' => 'Туризм с упором на фотографию в Красноярске',
-                'description' => 'Рассветы на Столбах, съёмка пещер и сплавов. С собой — любая камера.'
-            ],
+            'seo' => $this->seo->photo,
         ]);
     }
 
@@ -228,10 +209,7 @@ class FrontendController extends Controller
             'events' => $events->resolve(),
             'count' => $count,
             'categories' => $categories->resolve(),
-            'seo' => [
-                'title' => 'Куда сходить с детьми в Красноярске',
-                'description' => 'На эти мероприятия можно брать с собой детей.'
-            ],
+            'seo' => $this->seo->child,
         ]);
     }
 }
