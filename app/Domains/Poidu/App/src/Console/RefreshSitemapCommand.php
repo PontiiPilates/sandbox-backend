@@ -11,6 +11,8 @@ use SimpleXMLElement;
 
 class RefreshSitemapCommand extends Command
 {
+    private string $baseUrl = 'https://poidu.org';
+
     /**
      * The name and signature of the console command.
      *
@@ -29,6 +31,7 @@ class RefreshSitemapCommand extends Command
         private CategoryRepository $categoryRepository,
         private EventMiningRepository $eventMiningRepository
     ) {
+        $this->baseUrl = config('app.url');
         return parent::__construct();
     }
 
@@ -39,12 +42,13 @@ class RefreshSitemapCommand extends Command
     {
         $this->info("Начинается генерация нового sitemap");
 
+
         $sitemap = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>');
         $pages = collect();
 
         $stables = collect([
             [
-                'loc' => url('/'),
+                'loc' => $this->baseUrl . '/',
                 'priority' => '1.0',
                 'changefreq' => 'daily',
                 'lastmod' => Carbon::now()->toDateString()
@@ -55,7 +59,7 @@ class RefreshSitemapCommand extends Command
         $categories = $categories->map(function ($category) {
             if ($category['count'] > 0) {
                 return [
-                    'loc' => route($category['alias']),
+                    'loc' => $this->baseUrl . '/' . $category['alias'],
                     'priority' => '0.9',
                     'changefreq' => 'daily',
                     'lastmod' => Carbon::now()->toDateString()
@@ -66,7 +70,7 @@ class RefreshSitemapCommand extends Command
         $events = collect($this->eventMiningRepository->getEvents()->resolve());
         $events = $events->map(function ($event) {
             return [
-                'loc' => url("/event/{$event['id']}"),
+                'loc' => $this->baseUrl . "/event/{$event['id']}",
                 'priority' => '0.8',
                 'changefreq' => 'daily',
                 'lastmod' => Carbon::now()->toDateString()

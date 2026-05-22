@@ -85,7 +85,7 @@ class FrontendController extends Controller
             'count' => $count,
             'categories' => $categories->resolve(),
             'seo' => [
-                'title' => 'Экскурсии в Красноярске',
+                'title' => 'Групповые экскурсии в Красноярске',
                 'description' => 'Обзорные, исторические и природные экскурсии по Красноярску и краю. Готовые маршруты с гидами. От центра города до заповедников.'
             ],
         ]);
